@@ -58,14 +58,14 @@
 
                 <div class="table-responsive">
                     <table class="table table-striped table-sm">
-                        <thead>
+                        <thead class="text-center">
                             <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">ID Pengeluaran</th>
                                 <th scope="col">Tanggal</th>
                                 <th scope="col">Total Harga</th>
-                                <th scope="col">ID Pegawai</th>
-                                <th scope="col">Aksi</th>
+                                <th scope="col">Nama Pegawai</th>
+                                <th scope="col" colspan="2">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -75,20 +75,16 @@
                             foreach ($dataPengeluaran as $pengeluaran) {
                             ?>
                                 <tr>
-                                    <td>No</td>
-                                    <td><?php echo $pengeluaran["id_pengeluaran"];
-                                        ?></td>
-                                    <td><?php echo $pengeluaran["tanggal"];
-                                        ?></td>
-                                    <td><?php echo $pengeluaran["total_harga"];
-                                        ?></td>
-                                    <td><?php echo $pengluaran["id_pegawai"];
-                                        ?></td>
-                                    <td>
+                                    <td class="text-center"><?= $no++; ?></td>
+                                    <td><?php echo $pengeluaran["id_pengeluaran"];?></td>
+                                    <td><?php echo $pengeluaran["tanggal"];?></td>
+                                    <td><span class="text-start">Rp</span><span class="text-end"><?php echo number_format($pengeluaran["total_harga"],0,",",".");?></span></td>
+                                    <td><?php echo $pengeluaran["nama_pegawai"];?></td>
+                                    <td class="text-center">
                                         <a href="mhs-form-edit.php?nim=<?php //echo $mahasiswa["nim"] 
                                                                         ?>" class="badge bg-info"><span data-feather="edit"></span></a>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         <a href="mhs-konfirmasi-hapus.php?nim=<?php // echo $mahasiswa["nim"] 
                                                                                 ?>" class="badge bg-danger"><span data-feather="trash"></span></a>
                                     </td>

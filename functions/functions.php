@@ -77,7 +77,7 @@ function getListPengeluaran()
 {
     global $mysqli;
     if ($mysqli->connect_errno == 0) {
-        $res = $mysqli->query("SELECT p.id_pengeluaran,p.tanggal,p.total_harga,g.id_pegawai FROM pengeluaran p join pegawai g on p.id_pegawai=g.id_pegawai ORDER BY p.id_pengeluaran");
+        $res = $mysqli->query("SELECT p.id_pengeluaran,p.tanggal,p.total_harga,g.nama_pegawai FROM pengeluaran p join pegawai g on p.id_pegawai=g.id_pegawai ORDER BY p.id_pengeluaran");
         if ($res) {
             $data = $res->fetch_all(MYSQLI_ASSOC);
             $res->free();
