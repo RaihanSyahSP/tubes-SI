@@ -1,3 +1,7 @@
+<?php
+session_start();
+$_SESSION['current_page'] = "Detail Pengeluaran";
+?>
 <?php require_once('../functions/functions.php'); ?>
 <?php
 // checkLogin();
@@ -32,7 +36,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <a href=""><button type="button" class="btn btn-primary mb-4">Tambah Data Detail Pengeluaran</button></a>
+                            <a href="DetailPengeluaran-tambah.php"><button type="button" class="btn btn-primary mb-4">Tambah Data Detail Pengeluaran</button></a>
                         </div>
                         <?php formCari(); ?>
                     </div>
@@ -40,60 +44,63 @@
 
                 <?php
                 // // tombol cari ditekan
-                // if (isset($_POST["tblCari"])) {
-                //     $dataMahasiswa = cariMahasiswa($_POST["cariData"]);
-                //     if ($dataMahasiswa == false) {
-                //         echo "<div class='alert alert-danger' role='alert'>Data yang dicari tidak ditemukan</div>";
-                //         $dataMahasiswa = getListMahasiswa();
-                //     } else {
-                //         echo "<div class='alert alert-success' role='alert'>Data ditemukan</div>";
-                //     }
-                // } else {
-                //     $dataMahasiswa = getListMahasiswa();
-                // }
+                if (isset($_POST["tblCari"])) {
+                    $keyword = $_POST["cariData"];
+                    $dataPengeluaran = cariData("
+                                            SELECT * FROM pegawai 
+                                            WHERE id_pegawai LIKE '%$keyword%' OR 
+                                            nama_pegawai LIKE '%$keyword%' OR 
+                                            alamat LIKE '%$keyword%' OR 
+                                            no_hp LIKE '%$keyword%'
+                                            "
+                    );
+                    if ($dataPengeluaran == false) {
+                        echo "<div class='alert alert-danger' role='alert'>Data yang dicari tidak ditemukan</div>";
+                        $dataPengeluaran = getListPengeluaran();
+                    } else {
+                        echo "<div class='alert alert-success' role='alert'>Data ditemukan</div>";
+                    }
+                } else {
+                    $dataPengeluaran = getListPengeluaran();
+                }
                 ?>
 
 
                 <div class="table-responsive">
                     <table class="table table-striped table-sm">
-                        <thead>
+                        <thead class="text-center">
                             <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">ID Pengeluaran</th>
-                                <th scope="col">ID Stok</th>
+                                <th scope="col">Stok Bahan</th>
                                 <th scope="col">Harga Satuan</th>
-                                <th scope="col">Aksi</th>
+                                <th colspan="2" scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            // $dataMahasiswa = getListMahasiswa();
-                            // $no = 1;
-                            // foreach ($dataMahasiswa as $mahasiswa) {
+                            $no = 1;
+                            foreach ($dataDetailPengeluaran as $dpengeluaran) {
                             ?>
-                            <tr>
-                                <td>No</td>
-                                <td><?php //echo $mahasiswa["nim"]; 
-                                    ?></td>
-                                <td><?php //echo $mahasiswa["nama"]; 
-                                    ?></td>
-                                <td><?php //echo $mahasiswa["ttl"]; 
-                                    ?></td>
-                                <td><?php //echo $mahasiswa["tgl_lahir"]; 
-                                    ?></td>
-                                <td><?php //echo $mahasiswa["alamat"]; 
-                                    ?></td>
-                                <td>
-                                    <a href="mhs-form-edit.php?nim=<?php //echo $mahasiswa["nim"] 
-                                                                    ?>" class="badge bg-info"><span data-feather="edit"></span></a>
-                                </td>
-                                <td>
-                                    <a href="mhs-konfirmasi-hapus.php?nim=<?php // echo $mahasiswa["nim"] 
-                                                                            ?>" class="badge bg-danger"><span data-feather="trash"></span></a>
-                                </td>
-                            </tr>
+                                <tr class="text-center">
+                                    <td><?= $no++; ?>.</td>
+                                    <td><?php echo $dpengeluaran["id_pengeluaran"];
+                                        ?></td>
+                                    <td class="text-start"><?php echo $dpengeluaran["nama_bahan"];
+                                                            ?></td>
+                                    <td>Rp <?php echo number_format($dpengeluaran["harga_satuan"], 0, ",", ".");
+                                            ?></td>
+                                    <td>
+                                        <a href="mhs-form-edit.php?id_stok=<?php //echo $dpengeluaran["id_stok"];
+                                                                            ?>" class="badge bg-info"><span data-feather="edit"></span></a>
+                                    </td>
+                                    <td>
+                                        <a href="mhs-konfirmasi-hapus.php?id_stok=<?php //echo $dpengeluaran["id_pengeluaran"]
+                                                                                    ?>" class="badge bg-danger"><span data-feather="trash"></span></a>
+                                    </td>
+                                </tr>
                             <?php
-                            // }
+                            }
                             ?>
                         </tbody>
                     </table>

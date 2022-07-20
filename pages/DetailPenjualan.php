@@ -1,3 +1,7 @@
+<?php
+session_start();
+$_SESSION['current_page'] = "Detail Penjualan";
+?>
 <?php require_once('../functions/functions.php'); ?>
 <?php
 // checkLogin();
@@ -34,7 +38,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <a href=""><button type="button" class="btn btn-primary mb-4">Tambah Data Detail Penjualan</button></a>
+                            <a href="DetailPenjualan-tambah.php"><button type="button" class="btn btn-primary mb-4">Tambah Data Detail Penjualan</button></a>
                         </div>
                         <?php formCari(); ?>
                     </div>
@@ -58,44 +62,39 @@
 
                 <div class="table-responsive">
                     <table class="table table-striped table-sm">
-                        <thead>
+                        <thead class="text-center">
                             <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">ID Penjualan</th>
-                                <th scope="col">ID Menu</th>
+                                <th scope="col">Nama Menu</th>
                                 <th scope="col">Harga Satuan</th>
-                                <th scope="col">Aksi</th>
+                                <th colspan="2" scope="col">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            // $dataMahasiswa = getListMahasiswa();
-                            // $no = 1;
-                            // foreach ($dataMahasiswa as $mahasiswa) {
+                            $no = 1;
+                            foreach ($dataDetailPenjualan as $row) {
                             ?>
-                            <tr>
-                                <td>No</td>
-                                <td><?php //echo $mahasiswa["nim"]; 
-                                    ?></td>
-                                <td><?php //echo $mahasiswa["nama"]; 
-                                    ?></td>
-                                <td><?php //echo $mahasiswa["ttl"]; 
-                                    ?></td>
-                                <td><?php //echo $mahasiswa["tgl_lahir"]; 
-                                    ?></td>
-                                <td><?php //echo $mahasiswa["alamat"]; 
-                                    ?></td>
-                                <td>
-                                    <a href="mhs-form-edit.php?nim=<?php //echo $mahasiswa["nim"] 
-                                                                    ?>" class="badge bg-info"><span data-feather="edit"></span></a>
-                                </td>
-                                <td>
-                                    <a href="mhs-konfirmasi-hapus.php?nim=<?php // echo $mahasiswa["nim"] 
-                                                                            ?>" class="badge bg-danger"><span data-feather="trash"></span></a>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="text-center"><?= $no++; ?></td>
+                                    <td class="text-center"><?php echo $row["id_penjualan"];
+                                                            ?></td>
+                                    <td><?php echo $row["nama_menu"];
+                                        ?></td>
+                                    <td class="text-center">Rp <?php echo number_format($row["harga_satuan"], 0, ",", ".");
+                                                                ?></td>
+                                    <td>
+                                        <a href="mhs-form-edit.php?nim=<?php //echo $mahasiswa["nim"] 
+                                                                        ?>" class="badge bg-info"><span data-feather="edit"></span></a>
+                                    </td>
+                                    <td>
+                                        <a href="mhs-konfirmasi-hapus.php?nim=<?php // echo $mahasiswa["nim"] 
+                                                                                ?>" class="badge bg-danger"><span data-feather="trash"></span></a>
+                                    </td>
+                                </tr>
                             <?php
-                            // }
+                            }
                             ?>
                         </tbody>
                     </table>

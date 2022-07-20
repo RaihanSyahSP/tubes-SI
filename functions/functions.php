@@ -2,6 +2,84 @@
 include_once("../db/dbConfig.php");
 
 
+function getDataStok($id_stok)
+{
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+        $res = $mysqli->query("SELECT * FROM stok_bahan WHERE id_stok='$id_stok'");
+        if ($res) {
+            if ($res->num_rows > 0) {
+                $data = $res->fetch_assoc();
+                $res->free();
+                return $data;
+            } else
+                return FALSE;
+        } else
+            return FALSE;
+    } else
+        return FALSE;
+}
+
+function getDataMenu($id_menu)
+{
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+        $res = $mysqli->query("SELECT * FROM menu WHERE id_menu='$id_menu'");
+        if ($res) {
+            if ($res->num_rows > 0) {
+                $data = $res->fetch_assoc();
+                $res->free();
+                return $data;
+            } else
+                return FALSE;
+        } else
+            return FALSE;
+    } else
+        return FALSE;
+}
+
+function getDataPegawai($idPegawai)
+{
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+        $res = $mysqli->query("SELECT * FROM pegawai WHERE id_pegawai='$idPegawai'");
+        if ($res) {
+            if ($res->num_rows > 0) {
+                $data = $res->fetch_assoc();
+                $res->free();
+                return $data;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+// caridata
+function cariData($sql)
+{
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+        $res = $mysqli->query($sql);
+        if ($res) {
+            if ($res->num_rows > 0) {
+                $data = $res->fetch_all(MYSQLI_ASSOC);
+                $res->free();
+                return $data;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
 function getListMenu()
 {
     global $mysqli;
@@ -57,10 +135,12 @@ function getListPenjualan()
 {
     global $mysqli;
     if ($mysqli->connect_errno == 0) {
-        $res = $mysqli->query("SELECT penjualan.id_penjualan, penjualan.tanggal, penjualan.total_harga, pegawai.nama_pegawai 
+        $res = $mysqli->query(
+            "SELECT penjualan.id_penjualan, penjualan.tanggal, penjualan.total_harga, pegawai.nama_pegawai 
                                 FROM penjualan
-                                JOIN ON penjualan.id_pegawai = pegawai.id_pegawai
-                                ORDER BY id_penjualan");
+                                JOIN pegawai ON penjualan.id_pegawai = pegawai.id_pegawai
+                                ORDER BY id_penjualan"
+        );
         if ($res) {
             $data = $res->fetch_all(MYSQLI_ASSOC);
             $res->free();
@@ -95,9 +175,55 @@ function getListDetailPenjualan()
 {
     global $mysqli;
     if ($mysqli->connect_errno == 0) {
-        $res = $mysqli->query("SELECT  
-        FROM penjualan 
-        ORDER BY id_penjualan");
+        $res = $mysqli->query("SELECT p.id_penjualan, m.nama_menu, dp.harga_satuan
+        FROM detail_penjualan dp
+        JOIN penjualan p ON p.id_penjualan = dp.id_penjualan
+        JOIN menu m ON m.id_menu = dp.id_menu
+        ");
+        if ($res) {
+            $data = $res->fetch_all(MYSQLI_ASSOC);
+            $res->free();
+            return $data;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+//jalis jalis jalis
+function getListDetailPengeluaran()
+{
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+        $res = $mysqli->query("SELECT p.id_pengeluaran, s.nama_bahan, d.harga_satuan 
+        FROM detail_pengeluaran d 
+        JOIN pengeluaran p ON p.id_pengeluaran = d.id_pengeluaran
+        JOIN stok_bahan s ON s.id_stok = d.id_stok
+        ");
+        if ($res) {
+            $data = $res->fetch_all(MYSQLI_ASSOC);
+            $res->free();
+            return $data;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function getStatistikPengeluaran()
+{
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+        $res = $mysqli->query("SELECT p.id_pengeluaran, s.nama_bahan, concat(s.qty, \" \", s.satuan) jumlah_stok, 
+                            p.tanggal, dp.harga_satuan, p.total_harga, o.nama_pegawai
+                            FROM detail_pengeluaran dp
+                            JOIN pengeluaran p ON dp.id_pengeluaran = p.id_pengeluaran
+                            JOIN stok_bahan s ON dp.id_stok = s.id_stok
+                            JOIN pegawai o ON p.id_pegawai = o.id_pegawai
+        ");
         if ($res) {
             $data = $res->fetch_all(MYSQLI_ASSOC);
             $res->free();
@@ -112,65 +238,93 @@ function getListDetailPenjualan()
 
 
 
-
 function navbar()
 {
 ?>
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="position-sticky pt-3">
             <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="../pages/Statistik.php">
+                <li class="nav-item hover-highlight">
+                    <a class="nav-link <?php if ($_SESSION['current_page'] == 'Statistik') {
+                                            echo "nav-active";
+                                        }; ?>" aria-current="page" href="../pages/Statistik.php">
                         <span class="align-text-bottom"></span>
                         Statistik
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../pages/Penjualan.php">
+                <li class="nav-item hover-highlight">
+                    <a class="nav-link <?php if ($_SESSION['current_page'] == 'Menu') {
+                                            echo "nav-active";
+                                        }; ?>" href="../pages/Menu.php">
+                        <span class="align-text-bottom"></span>
+                        Menu
+                    </a>
+                </li>
+                <li class="nav-item hover-highlight">
+                    <a class="nav-link <?php if ($_SESSION['current_page'] == 'Penjualan') {
+                                            echo "nav-active";
+                                        }; ?>" href="../pages/Penjualan.php">
                         <span class="align-text-bottom"></span>
                         Penjualan
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../pages/Pengeluaran.php">
+                <li class="nav-item hover-highlight">
+                    <a class="nav-link <?php if ($_SESSION['current_page'] == 'Pengeluaran') {
+                                            echo "nav-active";
+                                        }; ?>" href="../pages/Pengeluaran.php">
                         <span class="align-text-bottom"></span>
                         Pengeluaran
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="../pages/Pegawai.php">
+                <li class="nav-item hover-highlight">
+                    <a class="nav-link <?php if ($_SESSION['current_page'] == 'Pegawai') {
+                                            echo "nav-active";
+                                        }; ?>" aria-current="page" href="../pages/Pegawai.php">
                         <span class="align-text-bottom"></span>
                         Pegawai
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../pages/StokBahan.php">
+                <li class="nav-item hover-highlight">
+                    <a class="nav-link <?php if ($_SESSION['current_page'] == 'Stok Bahan') {
+                                            echo "nav-active";
+                                        }; ?>" href="../pages/StokBahan.php">
                         <span class="align-text-bottom"></span>
                         Stok Bahan
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../pages/DetailPengeluaran.php">
+                <li class="nav-item hover-highlight">
+                    <a class="nav-link <?php if ($_SESSION['current_page'] == 'Detail Pengeluaran') {
+                                            echo "nav-active";
+                                        }; ?>" href="../pages/DetailPengeluaran.php">
                         <span class="align-text-bottom"></span>
                         Detail Pengeluaran
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="../pages/DetailPenjualan.php">
+                <li class="nav-item hover-highlight">
+                    <a class="nav-link <?php if ($_SESSION['current_page'] == 'Detail Penjualan') {
+                                            echo "nav-active";
+                                        }; ?>" aria-current="page" href="../pages/DetailPenjualan.php">
                         <span class="align-text-bottom"></span>
                         Detail Penjualan
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../pages/Menu.php">
-                        <span class="align-text-bottom"></span>
-                        Menu
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
 <?php
+}
+
+function formatTgl($tgl)
+{
+    $explode = explode("-", $tgl);
+    // explode[0] = tgl
+    // explode[1] = bln
+    // explode[2] = thn
+    $bulan = array(
+        1 => 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+    );
+    $format = $explode[2] . " " . $bulan[(int)$explode[1]] . " " . $explode[0];
+    return $format;
 }
 
 function headers()
@@ -214,3 +368,4 @@ function formCari()
     </div>
 <?php
 }
+?>

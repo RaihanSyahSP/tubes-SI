@@ -1,9 +1,11 @@
+<?php
+session_start();
+$_SESSION['current_page'] = "Statistik";
+?>
 <?php require_once('../functions/functions.php'); ?>
 <?php
 // checkLogin();
 ?>
-
-
 
 <!doctype html>
 <html lang="en">
@@ -22,57 +24,57 @@
 </head>
 
 <body>
-    <?php headers() ?>;
+    <?php headers(); ?>
     <div class="container-fluid">
         <div class="row">
-            <?php navbar() ?>;
+            <?php navbar(); ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Data Statistik</h1>
+                    <h1 class="h2">Statistik dan Detail Laporan</h1>
                 </div>
-
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <a href="mhs-tambah.php"><button type="button" class="btn btn-primary mb-4">Tambah Data Mahasiswa</button></a>
+                // div untuk statistik
+                <div class="row">
+                    <div class="col">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-sm">
+                                <thead class="align-middle">
+                                    <tr class="text-center">
+                                        <th scope="col">No</th>
+                                        <th scope="col">Tanggal Pengeluaran</th>
+                                        <!-- <th scope="col">ID Pengeluaran</th> -->
+                                        <th scope="col">Bahan Stok</th>
+                                        <th scope="col">Jumlah</th>
+                                        <th scope="col">Harga Bahan</th>
+                                        <th scope="col">Total Bayar</th>
+                                        <th scope="col">By Pegawai</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="align-middle">
+                                    <?php $statistikPengeluaran = getStatistikPengeluaran();
+                                    $no = 1;
+                                    foreach ($statistikPengeluaran as $row) {
+                                    ?>
+                                        <tr class=" text-center">
+                                            <td><?= $no++; ?>.</td>
+                                            <td><?php echo formatTgl($row["tanggal"]); ?></td>
+                                            <!-- <td><?php //echo $row["id_pengeluaran"];
+                                                        ?></td> -->
+                                            <td><?php echo $row["nama_bahan"]; ?></td>
+                                            <td><?php echo $row["jumlah_stok"]; ?></td>
+                                            <td>Rp <?php echo number_format($row["harga_satuan"], 0, ",", "."); ?></td>
+                                            <td>Rp <?php echo number_format($row["total_harga"], 0, ",", "."); ?></td>
+                                            <td><?php echo $row["nama_pegawai"]; ?></td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
                         </div>
-                        <?php formCari(); ?>
                     </div>
-                </div>
-
-                <?php
-                // // tombol cari ditekan
-                // if (isset($_POST["tblCari"])) {
-                //     $dataMahasiswa = cariMahasiswa($_POST["cariData"]);
-                //     if ($dataMahasiswa == false) {
-                //         echo "<div class='alert alert-danger' role='alert'>Data yang dicari tidak ditemukan</div>";
-                //         $dataMahasiswa = getListMahasiswa();
-                //     } else {
-                //         echo "<div class='alert alert-success' role='alert'>Data ditemukan</div>";
-                //     }
-                // } else {
-                //     $dataMahasiswa = getListMahasiswa();
-                // }
-                ?>
-
-
-                <div class="table-responsive">
-                    <table class="table table-striped table-sm">
-                        <!-- <thead>
-                            <tr>
-                                <th scope="col">No</th>
-                                <th scope="col">NIM</th>
-                                <th scope="col">Nama</th>
-                                <th scope="col">Tempat Lahir</th>
-                                <th scope="col">Tanggal Lahir</th>
-                                <th scope="col">Alamat</th>
-                                <th scope="col">Aksi</th>
-                            </tr>
-                        </thead> -->
-                        <tbody>
-
-                        </tbody>
-                    </table>
+                    <div class=" col">
+                        kolom penjualan
+                    </div>
                 </div>
             </main>
         </div>

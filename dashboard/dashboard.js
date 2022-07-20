@@ -51,3 +51,9 @@
   //   }
   // })
 })()
+
+// Warnai nav saat dibuka
+function navActive() {
+  na = document.getElementById("navLink");
+ na.classList.add("nav-active");
+}

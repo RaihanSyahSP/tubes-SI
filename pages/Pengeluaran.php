@@ -1,3 +1,7 @@
+<?php
+session_start();
+$_SESSION['current_page'] = "Pengeluaran";
+?>
 <?php require_once('../functions/functions.php'); ?>
 <?php
 // checkLogin();
@@ -28,13 +32,13 @@
             <?php navbar() ?>;
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Data Statistik</h1>
+                    <h1 class="h2">Data Pengeluaran</h1>
                 </div>
 
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <a href=""><button type="button" class="btn btn-primary mb-4">Tambah Data Pengeluaran</button></a>
+                            <a href="pengeluaran-tambah.php"><button type="button" class="btn btn-primary mb-4">Tambah Data Pengeluaran</button></a>
                         </div>
                         <?php formCari(); ?>
                     </div>
@@ -70,21 +74,20 @@
                         </thead>
                         <tbody>
                             <?php
-                            $dataPengeluaran = getListPengeluaran();
                             $no = 1;
                             foreach ($dataPengeluaran as $pengeluaran) {
                             ?>
-                                <tr>
-                                    <td class="text-center"><?= $no++; ?></td>
-                                    <td><?php echo $pengeluaran["id_pengeluaran"];?></td>
-                                    <td><?php echo $pengeluaran["tanggal"];?></td>
-                                    <td><span class="text-start">Rp</span><span class="text-end"><?php echo number_format($pengeluaran["total_harga"],0,",",".");?></span></td>
-                                    <td><?php echo $pengeluaran["nama_pegawai"];?></td>
-                                    <td class="text-center">
+                                <tr class="text-center">
+                                    <td><?= $no++; ?>.</td>
+                                    <td><?php echo $pengeluaran["id_pengeluaran"]; ?></td>
+                                    <td><?php echo formatTgl($pengeluaran["tanggal"]); ?></td>
+                                    <td>Rp <?php echo number_format($pengeluaran["total_harga"], 0, ",", "."); ?></td>
+                                    <td><?php echo $pengeluaran["nama_pegawai"]; ?></td>
+                                    <td>
                                         <a href="mhs-form-edit.php?nim=<?php //echo $mahasiswa["nim"] 
                                                                         ?>" class="badge bg-info"><span data-feather="edit"></span></a>
                                     </td>
-                                    <td class="text-center">
+                                    <td>
                                         <a href="mhs-konfirmasi-hapus.php?nim=<?php // echo $mahasiswa["nim"] 
                                                                                 ?>" class="badge bg-danger"><span data-feather="trash"></span></a>
                                     </td>
