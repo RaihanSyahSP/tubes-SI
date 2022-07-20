@@ -10,18 +10,7 @@ $_SESSION['current_page'] = "Statistik";
 <!doctype html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sistem Penjualan Bang Ajip</title>
-    <!-- bootstrap css -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="../style/style.css">
-
-    <!-- Custom styles for this template -->
-    <link href="../style/dashboard.css" rel="stylesheet">
-</head>
+<?php include_once("../head.php"); ?>
 
 <body>
     <?php headers(); ?>
@@ -32,25 +21,26 @@ $_SESSION['current_page'] = "Statistik";
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Statistik dan Detail Laporan</h1>
                 </div>
-                // div untuk statistik
+                <!-- div untuk statistik -->
                 <div class="row">
                     <div class="col">
                         <div class="table-responsive">
-                            <table class="table table-striped table-sm">
+                            <table id="example" class="nowrap uk-table uk-table-hover uk-table-striped" style="width:100%">
                                 <thead class="align-middle">
                                     <tr class="text-center">
-                                        <th scope="col">No</th>
-                                        <th scope="col">Tanggal Pengeluaran</th>
+                                        <th scope="col"  class="dt-center">No</th>
+                                        <th scope="col"  class="dt-center">Tanggal Pengeluaran</th>
                                         <!-- <th scope="col">ID Pengeluaran</th> -->
-                                        <th scope="col">Bahan Stok</th>
-                                        <th scope="col">Jumlah</th>
-                                        <th scope="col">Harga Bahan</th>
-                                        <th scope="col">Total Bayar</th>
-                                        <th scope="col">By Pegawai</th>
+                                        <th scope="col"  class="dt-center">Bahan Stok</th>
+                                        <th scope="col"  class="dt-center">Jumlah</th>
+                                        <th scope="col"  class="dt-center">Harga Bahan</th>
+                                        <th scope="col"  class="dt-center">Total Bayar</th>
+                                        <th scope="col"  class="dt-center">By Pegawai</th>
                                     </tr>
                                 </thead>
                                 <tbody class="align-middle">
-                                    <?php $statistikPengeluaran = getStatistikPengeluaran();
+                                    <?php
+                                    $statistikPengeluaran = getStatistikPengeluaran();
                                     $no = 1;
                                     foreach ($statistikPengeluaran as $row) {
                                     ?>
@@ -80,8 +70,6 @@ $_SESSION['current_page'] = "Statistik";
         </div>
     </div>
 
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
             window.setTimeout(function() {
@@ -89,12 +77,11 @@ $_SESSION['current_page'] = "Statistik";
                     $(this).remove();
                 });
             }, 1000);
+            $('#example').DataTable({
+                scrollX: true,
+            });
         });
     </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
-    <script src="../dashboard/dashboard.js"></script>
 </body>
 
 </html>

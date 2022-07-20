@@ -1,7 +1,6 @@
 <?php
 include_once("../db/dbConfig.php");
 
-
 function getDataStok($id_stok)
 {
     global $mysqli;

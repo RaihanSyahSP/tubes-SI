@@ -1,9 +1,12 @@
+
 /* globals Chart:false, feather:false */
 
 (() => {
   'use strict'
 
-  feather.replace({ 'aria-hidden': 'true' })
+  feather.replace({
+    'aria-hidden': 'true'
+  })
 
   // // Graphs
   // const ctx = document.getElementById('myChart')
@@ -55,5 +58,9 @@
 // Warnai nav saat dibuka
 function navActive() {
   na = document.getElementById("navLink");
- na.classList.add("nav-active");
+  na.classList.add("nav-active");
 }
+
+$(document).ready(function () {
+  $('#example').DataTable();
+});
