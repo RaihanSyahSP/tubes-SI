@@ -5,8 +5,10 @@ $_SESSION['current_page'] = "Pegawai";
 <?php include_once("../functions/functions.php"); ?>
 <?php
 //checkLogin();
+if (!isset($_SESSION["id_pegawai"])) {
+    header("Location: ../index.php?error=4");
+}
 ?>
-<!-- ini ada check login -->
 
 <!doctype html>
 <html lang="en">
@@ -32,7 +34,7 @@ $_SESSION['current_page'] = "Pegawai";
                             <div class="row mb-3">
                                 <label for="inputIdPegawai" class="col-sm-2 col-form-label">ID Pegawai</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="inputIdPegawai" class="form-control" value="<?php echo $data["id_pegawai"]; ?>" readonly>
+                                    <input type="text" name="inputIdPegawai" class="form-control" value="<?php echo $data["id_pegawai"]; ?>" placeholder="Diisi huruf 'B' diikuti 3 angka. Contoh: B123" readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">

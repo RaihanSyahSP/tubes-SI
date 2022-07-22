@@ -81,7 +81,17 @@ th.dt-center, td.dt-center {
     text-align: center; 
 }
 
+a:hover {
+    text-decoration: none;
+}
+
+#Logout {
+}
+#Logout > a {
+    text-decoration: none;
+}
+
 /* div.dataTables_wrapper {
-    width: 800px;
+    width: 1000px;
     margin: 0 auto;
 } */

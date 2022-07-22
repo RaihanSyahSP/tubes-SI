@@ -5,8 +5,11 @@ $_SESSION['current_page'] = "Menu";
 <?php require_once '../functions/functions.php'; ?>
 <?php
 //checkLogin();
+if (!isset($_POST["tblEdit"])) {
+    header("Location: Menu.php");
+}
 ?>
-<!-- ini ada check login -->
+
 <!doctype html>
 <html lang="en">
 
@@ -24,10 +27,26 @@ $_SESSION['current_page'] = "Menu";
                 <?php
                 if (isset($_POST["tblEdit"])) {
                     if ($mysqli->connect_errno == 0) {
-                        $id_menu = $mysqli->escape_string($_POST["inputIdMenu"]);
-                        $nama_menu = $mysqli->escape_string($_POST["inputNamaMenu"]);
-                        $jenis_menu = $mysqli->escape_string($_POST["inputJenisMenu"]);
+                        $idMenu = $mysqli->escape_string($_POST["inputIdMenu"]);
+                        $namaMenu = $mysqli->escape_string($_POST["inputNamaMenu"]);
+                        $jenisMenu = $mysqli->escape_string($_POST["inputJenisMenu"]);
                         $adaError = false;
+
+                        $pesanSalah = "";
+
+                        if(strlen($namaMenu) < 2){
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan nama menu harus lebih dari 2 karakter.                 
+                                </div>";
+                            $adaError = true;
+                        }
+                        
+                        // if ($jenisMenu == 'Pilih Jenis Menu') {
+                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                        //             <strong>Gagal!</strong> Data gagal disimpan pilih Jenis Menu terlebih dahulu.                 
+                        //         </div>";
+                        //     $adaError = true;
+                        // }
 
                         //         // validasi kode matkul
                         //         $pesanSalah = '';
@@ -64,8 +83,8 @@ $_SESSION['current_page'] = "Menu";
                     }
 
                     if ($adaError == false) {
-                        $sql = "UPDATE menu SET id_menu = '$id_menu', nama_menu = '$nama_menu', jenis_menu='$jenis_menu' 
-                                WHERE id_menu = '$id_menu'";
+                        $sql = "UPDATE menu SET id_menu = '$idMenu', nama_menu = '$namaMenu', jenis_menu='$jenisMenu' 
+                                WHERE id_menu = '$idMenu'";
                         $res = $mysqli->query($sql);
 
                         if ($res) {
@@ -77,11 +96,20 @@ $_SESSION['current_page'] = "Menu";
                                     <a href='Menu.php'>
                                             <button type='button' class='btn btn-success'>View Menu</button>
                                     </a>";
+                            } else {
+                                echo "
+                                    <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                                        <strong>Berhasil!</strong> Data berhasil disimpan, tanpa perubahan data.    
+                                    </div>
+                                    <a href='Menu.php'>
+                                        <button type='button' class='btn btn-success'>View Menu</button>
+                                    </a>
+                                    ";
                             }
                         } else {
                             echo "
                                 <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan, id pegawai sudah ada.                 
+                                    <strong>Gagal!</strong> Data gagal disimpan, id menu sudah ada.                 
                                 </div>
                                 <a href='javascript:history.back()'><button type='button' class='btn btn-primary'>Kembali</button></a>
                                 ";

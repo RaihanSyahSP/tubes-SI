@@ -5,6 +5,9 @@ $_SESSION['current_page'] = "Pengeluaran";
 <?php require_once('../functions/functions.php'); ?>
 <?php
 // checkLogin();
+if (!isset($_SESSION["id_pegawai"])) {
+    header("Location: ../index.php?error=4");
+}
 ?>
 
 
@@ -20,7 +23,7 @@ $_SESSION['current_page'] = "Pengeluaran";
         <div class="row">
             <?php navbar() ?>;
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                     <h1 class="h2">Data Pengeluaran</h1>
                 </div>
 
@@ -58,8 +61,8 @@ $_SESSION['current_page'] = "Pengeluaran";
                                     <td>Rp <?php echo number_format($pengeluaran["total_harga"], 0, ",", "."); ?></td>
                                     <td><?php echo $pengeluaran["nama_pegawai"]; ?></td>
                                     <td>
-                                        <a href="mhs-form-edit.php?id_pengeluaran=<?php echo $pengeluaran["id_pengeluaran"] ?>" class="badge bg-info"><i class="fas fa-pen"></i></a>
-                                        <a href="mhs-konfirmasi-hapus.php?id_pengeluaran=<?php echo $pengeluaran["id_pengeluaran"]?>" class="badge bg-danger"><i class="fas fa-trash-can"></i></a>
+                                        <a href="pengeluaran-form-edit.php?id_pengeluaran=<?php echo $pengeluaran["id_pengeluaran"] ?>" class="badge bg-info"><i class="fas fa-pen"></i></a>
+                                        <a href="pengeluaran-konfirmasi-hapus.php?id_pengeluaran=<?php echo $pengeluaran["id_pengeluaran"]?>" class="badge bg-danger"><i class="fas fa-trash-can"></i></a>
                                     </td>
                                 </tr>
                             <?php

@@ -1,13 +1,13 @@
 <?php
 session_start();
-$_SESSION['current_page'] = "Pegawai";
+$_SESSION['current_page'] = "Detail Pengeluaran";
 ?>
 <?php include_once '../db/dbConfig.php'; ?>
 <?php require_once '../functions/functions.php'; ?>
 <?php
 // checkLogin();
 if (!isset($_POST["tblHapus"])) {
-    header("Location: Pegawai.php");
+    header("Location: DetailPengeluaran.php");
 }
 ?>
 
@@ -23,14 +23,14 @@ if (!isset($_POST["tblHapus"])) {
             <?php navbar() ?>;
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Hapus Data Pegawai</h1>
+                    <h1 class="h2">Hapus Data Detail Pengeluaran</h1>
                 </div>
                 <?php
                 if (isset($_POST["tblHapus"])) {
                     if ($mysqli->connect_errno == 0) {
-                        $idPegawai = $mysqli->escape_string($_POST["id_pegawai"]);
+                        $id = $mysqli->escape_string($_POST["id"]);
 
-                        $sql = "DELETE FROM pegawai WHERE id_pegawai='$idPegawai'";
+                        $sql = "DELETE FROM detail_pengeluaran WHERE id='$id'";
                         $res = $mysqli->query($sql);
 
                         if ($res) {
@@ -39,7 +39,7 @@ if (!isset($_POST["tblHapus"])) {
                                     <div class='alert alert-success' role='alert'>
                                         Data berhasil dihapus
                                     </div>
-                                    <a href='Pegawai.php'>
+                                    <a href='DetailPengeluaran.php'>
                                         <button type='button' class='btn btn-success'>View Pegawai</button>
                                     </a>
                                 ";

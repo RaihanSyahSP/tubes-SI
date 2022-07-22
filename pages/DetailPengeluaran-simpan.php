@@ -6,8 +6,11 @@ $_SESSION['current_page'] = "Detail Pengeluaran";
 <?php require_once '../functions/functions.php'; ?>
 <?php
 // checkLogin();
+if (!isset($_POST["tblSimpan"])) {
+    header("Location: DetailPengeluaran.php");
+}
 ?>
-<!-- ini ada check login -->
+
 <!doctype html>
 <html lang="en">
 
@@ -33,6 +36,27 @@ $_SESSION['current_page'] = "Detail Pengeluaran";
 
                         $pesanSalah = '';
 
+                        if ($id_pengeluaran == "") {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan! ID Pengeluaran harus dipilih.                 
+                                </div>";
+                            $adaError = true;
+                        }
+
+                        if ($stok_bahan == "") {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan! Stok bahan harus dipilih.                 
+                                </div>";
+                            $adaError = true;
+                        }
+
+                        if (!preg_match("/^[0-9]*$/", $harga_satuan)) {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan! format harga tidak boleh mengandung huruf.                 
+                                </div>";
+                            $adaError = true;
+                        }
+                        
                         // //validasi nilai
                         // if (strlen($kd_nilai) > 4 || strlen($kd_nilai) < 4) {
                         //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
@@ -86,10 +110,10 @@ $_SESSION['current_page'] = "Detail Pengeluaran";
                         // }
 
 
-                        // if ($adaError == false) {
-                        $sql = "INSERT INTO detail_pengeluaran VALUES ('$id_pengeluaran', '$stok_bahan', '$harga_satuan')";
+                        if ($adaError == false) {
+                        $sql = "INSERT INTO detail_pengeluaran(id_pengeluaran, id_stok, harga_satuan) VALUES ('$id_pengeluaran', '$stok_bahan', '$harga_satuan')";
                         $res = $mysqli->query($sql);
-                        var_dump($res);
+            
 
                         if ($res) {
                             if ($mysqli->affected_rows > 0) {
@@ -97,19 +121,19 @@ $_SESSION['current_page'] = "Detail Pengeluaran";
                                     <div class='alert alert-success alert-dismissible fade show' role='alert'>
                                         <strong>Berhasil!</strong> Data berhasil disimpan.    
                                     </div>
-                                    <a href='Menu.php'>
-                                            <button type='button' class='btn btn-success'>View Nilai</button>
+                                    <a href='DetailPengeluaran.php'>
+                                            <button type='button' class='btn btn-success'>View Detail Pengeluaran</button>
                                     </a>";
                             }
                         } else {
                             echo "
                                 <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan, ID Menu sudah ada udah ada.                 
+                                    <strong>Gagal!</strong> Data gagal disimpan, ID sudah ada udah ada.                 
                                 </div>
                                 <a href='javascript:history.back()'><button type='button' class='btn btn-primary'>Kembali</button></a>
                                 ";
                         }
-                        // } else {
+                        } else {
                 ?>
                         <div class="container">
                             <div class="row">
@@ -120,8 +144,9 @@ $_SESSION['current_page'] = "Detail Pengeluaran";
                             </div>
                         </div>
                 <?php
-                        // }
+                        }
                     }
+                    
                 } else {
                     echo "Gagal koneksi"  . $mysqli->connect_error   . "<br>";
                 }

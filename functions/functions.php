@@ -57,6 +57,90 @@ function getDataPegawai($idPegawai)
         return false;
     }
 }
+
+function getDataPenjualan($id_penjualan) 
+{
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+        $res = $mysqli->query("SELECT * FROM penjualan WHERE id_penjualan='$id_penjualan'");
+        if ($res) {
+            if ($res->num_rows > 0) {
+                $data = $res->fetch_assoc();
+                $res->free();
+                return $data;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function getDataPengeluaran($id) 
+{
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+        $res = $mysqli->query("SELECT * FROM pengeluaran WHERE id_pengeluaran='$id'");
+        if ($res) {
+            if ($res->num_rows > 0) {
+                $data = $res->fetch_assoc();
+                $res->free();
+                return $data;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function getDataDPengeluaran($id) 
+{
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+        $res = $mysqli->query("SELECT * FROM detail_pengeluaran WHERE id=$id");
+        if ($res) {
+            if ($res->num_rows > 0) {
+                $data = $res->fetch_assoc();
+                $res->free();
+                return $data;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function getDataDPenjualan($id) 
+{
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+        $res = $mysqli->query("SELECT * FROM detail_penjualan WHERE id = '$id'");
+        if ($res) {
+            if ($res->num_rows > 0) {
+                $data = $res->fetch_assoc();
+                $res->free();
+                return $data;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
 // caridata
 function cariData($sql)
 {
@@ -84,6 +168,57 @@ function getListMenu()
     global $mysqli;
     if ($mysqli->connect_errno == 0) {
         $res = $mysqli->query("SELECT * FROM menu ORDER BY id_menu");
+        if ($res) {
+            $data = $res->fetch_all(MYSQLI_ASSOC);
+            $res->free();
+            return $data;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function getCountJenisMenu() {
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+            $res = $mysqli->query("SELECT jenis_menu,COUNT(*) as jumlah 
+                                    FROM menu 
+                                    GROUP BY jenis_menu 
+                                    ORDER BY jenis_menu");
+        if ($res) {
+            $data = $res->fetch_all(MYSQLI_ASSOC);
+            $res->free();
+            return $data;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function getCountPengeluaran() {
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+            $res = $mysqli->query("SELECT SUM(total_harga) total, monthname(tanggal) bulan, year(tanggal) tahun from pengeluaran group by extract(month from tanggal)");
+        if ($res) {
+            $data = $res->fetch_all(MYSQLI_ASSOC);
+            $res->free();
+            return $data;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function getCountPenjualan() {
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+            $res = $mysqli->query("SELECT SUM(total_harga) total, monthname(tanggal) bulan, year(tanggal) tahun from penjualan group by extract(month from tanggal)");
         if ($res) {
             $data = $res->fetch_all(MYSQLI_ASSOC);
             $res->free();
@@ -136,9 +271,9 @@ function getListPenjualan()
     if ($mysqli->connect_errno == 0) {
         $res = $mysqli->query(
             "SELECT penjualan.id_penjualan, penjualan.tanggal, penjualan.total_harga, pegawai.nama_pegawai 
-                                FROM penjualan
-                                JOIN pegawai ON penjualan.id_pegawai = pegawai.id_pegawai
-                                ORDER BY id_penjualan"
+             FROM penjualan
+             JOIN pegawai ON penjualan.id_pegawai = pegawai.id_pegawai
+             ORDER BY id_penjualan"
         );
         if ($res) {
             $data = $res->fetch_all(MYSQLI_ASSOC);
@@ -156,7 +291,8 @@ function getListPengeluaran()
 {
     global $mysqli;
     if ($mysqli->connect_errno == 0) {
-        $res = $mysqli->query("SELECT p.id_pengeluaran,p.tanggal,p.total_harga,g.nama_pegawai FROM pengeluaran p join pegawai g on p.id_pegawai=g.id_pegawai ORDER BY p.id_pengeluaran");
+        $res = $mysqli->query("SELECT p.id_pengeluaran,p.tanggal,p.total_harga,g.nama_pegawai 
+        FROM pengeluaran p JOIN pegawai g ON p.id_pegawai=g.id_pegawai ORDER BY p.id_pengeluaran");
         if ($res) {
             $data = $res->fetch_all(MYSQLI_ASSOC);
             $res->free();
@@ -174,7 +310,7 @@ function getListDetailPenjualan()
 {
     global $mysqli;
     if ($mysqli->connect_errno == 0) {
-        $res = $mysqli->query("SELECT p.id_penjualan, m.nama_menu, dp.harga_satuan
+        $res = $mysqli->query("SELECT dp.id, p.id_penjualan, m.nama_menu, dp.harga_satuan
         FROM detail_penjualan dp
         JOIN penjualan p ON p.id_penjualan = dp.id_penjualan
         JOIN menu m ON m.id_menu = dp.id_menu
@@ -195,7 +331,7 @@ function getListDetailPengeluaran()
 {
     global $mysqli;
     if ($mysqli->connect_errno == 0) {
-        $res = $mysqli->query("SELECT p.id_pengeluaran, s.nama_bahan, d.harga_satuan 
+        $res = $mysqli->query("SELECT d.id, p.id_pengeluaran, s.nama_bahan, d.harga_satuan 
         FROM detail_pengeluaran d 
         JOIN pengeluaran p ON p.id_pengeluaran = d.id_pengeluaran
         JOIN stok_bahan s ON s.id_stok = d.id_stok
@@ -221,6 +357,28 @@ function getStatistikPengeluaran()
                             FROM detail_pengeluaran dp
                             JOIN pengeluaran p ON dp.id_pengeluaran = p.id_pengeluaran
                             JOIN stok_bahan s ON dp.id_stok = s.id_stok
+                            JOIN pegawai o ON p.id_pegawai = o.id_pegawai
+        ");
+        if ($res) {
+            $data = $res->fetch_all(MYSQLI_ASSOC);
+            $res->free();
+            return $data;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+function getStatistikPenjualan()
+{
+    global $mysqli;
+    if ($mysqli->connect_errno == 0) {
+        $res = $mysqli->query("SELECT p.id_penjualan, p.tanggal, m.nama_menu, m.jenis_menu, dp.harga_satuan, p.total_harga, o.nama_pegawai
+                            FROM detail_penjualan dp
+                            JOIN penjualan p ON dp.id_penjualan = p.id_penjualan
+                            JOIN menu m ON dp.id_menu = m.id_menu
                             JOIN pegawai o ON p.id_pegawai = o.id_pegawai
         ");
         if ($res) {
@@ -292,19 +450,19 @@ function navbar()
                     </a>
                 </li>
                 <li class="nav-item hover-highlight">
-                    <a class="nav-link <?php if ($_SESSION['current_page'] == 'Detail Pengeluaran') {
-                                            echo "nav-active";
-                                        }; ?>" href="../pages/DetailPengeluaran.php">
-                        <span class="align-text-bottom"></span>
-                        Detail Pengeluaran
-                    </a>
-                </li>
-                <li class="nav-item hover-highlight">
                     <a class="nav-link <?php if ($_SESSION['current_page'] == 'Detail Penjualan') {
                                             echo "nav-active";
                                         }; ?>" aria-current="page" href="../pages/DetailPenjualan.php">
                         <span class="align-text-bottom"></span>
                         Detail Penjualan
+                    </a>
+                </li>
+                <li class="nav-item hover-highlight">
+                    <a class="nav-link <?php if ($_SESSION['current_page'] == 'Detail Pengeluaran') {
+                                            echo "nav-active";
+                                        }; ?>" href="../pages/DetailPengeluaran.php">
+                        <span class="align-text-bottom"></span>
+                        Detail Pengeluaran
                     </a>
                 </li>
             </ul>
@@ -336,11 +494,11 @@ function headers()
         </button>
         <div class="navbar-nav">
             <div class="nav-item text-nowrap">
-                <form action="../logout.php" method="POST">
-                    <button type="submit" class="nav-link px-3 bg-dark border-0 fw-bold">
-                        Logout
-                        <i data-feather="log-out">
-                        </i>
+                <form action="../logout.php" method="POST"></form>
+                    <button id="Logout" type="submit" class="nav-link px-3 border-0 fw-bold">
+                        <a href="../logout.php">Logout
+                            <i data-feather="log-out"></i>
+                        </a>
                     </button>
                 </form>
             </div>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-$_SESSION['current_page'] = "Menu";
+$_SESSION['current_page'] = "Detail Pengeluaran";
 ?>
 <?php include_once '../db/dbConfig.php'; ?>
 <?php require_once '../functions/functions.php'; ?>
@@ -23,31 +23,38 @@ if (!isset($_SESSION["id_pegawai"])) {
             <?php navbar() ?>;
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Hapus Data Menu</h1>
+                    <h1 class="h2">Hapus Data Detail Pengeluaran</h1>
                 </div>
                 <?php
-                if (isset($_GET["id_menu"])) {
-                    $id_menu = $mysqli->escape_string($_GET["id_menu"]);
-                    // $data = getMahasiswa($kd_mk);
-                    if ($data = getDataMenu($id_menu)) {
+                if (isset($_GET["id"])) {
+                    $id = $mysqli->escape_string($_GET["id"]);
+                    if ($row = getDataDPengeluaran($id)) {
                 ?>
-                        <form method="POST" name="form-hapus-menu" action="menu-hapus.php">
+                        <form method="POST" name="form-hapus-mhs" action="detailpengeluaran-hapus.php">
+                            <input type="hidden" name="id" value="<?php echo $row["id"]; ?>">
                             <div class="row mb-3">
-                                <label for="idMenu" class="col-sm-2 col-form-label">Id Menu</label>
+                                <label for="idPengeluaran" class="col-sm-2 col-form-label">Id Pengeluaran</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="idMenu" name="idMenu" readonly value="<?php echo $data["id_menu"]; ?>">
+                                    <input type="text" class="form-control" id="idPengeluaran" name="idPengeluaran" readonly value="<?php echo $row["id_pengeluaran"]; ?>">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="namaMenu" class="col-sm-2 col-form-label">Nama Menu</label>
+                                <label for="stok" class="col-sm-2 col-form-label">Stok Bahan</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="namaMenu" readonly name="namaMenu" value="<?php echo $data["nama_menu"]; ?>">
+                                    <input type="text" class="form-control" id="stok" readonly name="stok" value="<?php 
+                                                                                                                  $data = getListStok();
+                                                                                                                  foreach ($data as $rowDataStok) {
+                                                                                                                    if ($rowDataStok["id_stok"] == $row["id_stok"]) {
+                                                                                                                        echo $rowDataStok["nama_bahan"];
+                                                                                                                    }
+                                                                                                                  }
+                                                                                                                  ?>">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="jenisMenu" class="col-sm-2 col-form-label">Jenis Menu</label>
+                                <label for="harga" class="col-sm-2 col-form-label">Harga Satuan</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="jenisMenu" readonly name="jenisMenu" value="<?php echo $data["jenis_menu"]; ?>">
+                                    <input type="text" class="form-control" id="harga" readonly name="harga" value="<?php echo $row["harga_satuan"]; ?>">
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary" name="tblHapus">Hapus</button>

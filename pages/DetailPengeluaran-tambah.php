@@ -6,8 +6,10 @@ $_SESSION['current_page'] = "Detail Pengeluaran";
 <?php require_once '../functions/functions.php'; ?>
 <?php
 // checkLogin();
+if (!isset($_SESSION["id_pegawai"])) {
+    header("Location: ../index.php?error=4");
+}
 ?>
-<!-- ini ada check login -->
 
 <!doctype html>
 <html lang="en">
@@ -24,16 +26,33 @@ $_SESSION['current_page'] = "Detail Pengeluaran";
                     <h1 class="h2">Tambah Data Detail Pengeluaran</h1>
                 </div>
                 <form method="POST" name="form-tambah-DetailPengeluaran" action="DetailPengeluaran-simpan.php">
+
                     <div class="row mb-3">
-                        <label for="inputIdPengeluaran" class="col-sm-2 col-form-label">ID Pengeluaran</label>
+                        <label for="inputIdPengeluaran" class="col-sm-2 col-form-label">Id Pengeluaran</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputIdPengeluaran" name="inputIdPengeluaran" requiired>
+                            <select class="form-control" id="inputIdPengeluaran" name="inputIdPengeluaran">
+                                <option value="">Pilih Id Pengeluaran</option>
+                                <?php
+                                    $data = getListPengeluaran();
+                                    foreach ($data as $row) {
+                                        echo "<option value=\"" . $row["id_pengeluaran"] . "\">" . $row["id_pengeluaran"] . "</option>";
+                                    }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class=" row mb-3">
                         <label for="inputStokBahan" class="col-sm-2 col-form-label">Stok Bahan</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputStokBahan" name="inputStokBahan" required>
+                            <select class="form-control" id="inputStokBahan" name="inputStokBahan">
+                                <option value="">Pilih Stok Bahan</option>
+                                <?php
+                                    $data = getListStok();
+                                    foreach ($data as $row) {
+                                        echo "<option value=\"" . $row["id_stok"] . "\">" . $row["nama_bahan"] . "</option>";
+                                    }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -43,7 +62,7 @@ $_SESSION['current_page'] = "Detail Pengeluaran";
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary" name="tblSimpan">Simpan</button>
-                    <a href="pengeluaran.php"><button type="button" class="btn btn-danger">Kembali</button></a>
+                    <a href="DetailPengeluaran.php"><button type="button" class="btn btn-danger">Kembali</button></a>
                 </form>
             </main>
         </div>

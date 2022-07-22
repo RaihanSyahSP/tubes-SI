@@ -8,7 +8,7 @@ if (!isset($_POST["tblHapus"])) {
     header("Location: Menu.php");
 }
 ?>
-<!-- ini ada check login -->
+
 <!doctype html>
 <html lang="en">
 

@@ -5,7 +5,9 @@ $_SESSION['current_page'] = "Menu";
 <?php require_once('../functions/functions.php'); ?>
 <?php
 // checkLogin();
-
+if (!isset($_SESSION["id_pegawai"])) {
+    header("Location: ../index.php?error=4");
+}
 ?>
 
 <!doctype html>
@@ -19,7 +21,7 @@ $_SESSION['current_page'] = "Menu";
         <div class="row">
             <?php navbar() ?>;
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                     <h1 class="h2">Data Menu</h1>
                 </div>
 
@@ -33,7 +35,7 @@ $_SESSION['current_page'] = "Menu";
                 <a href="menu-tambah.php"><button type="button" class="btn btn-primary mb-4">Tambah Data Menu</button></a>
 
                 <div class="table-responsive">
-                    <table id="example" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
+                    <table id="example" class="uk-table uk-table-hover uk-table-striped " style="width:100%">
                         <thead class="text-center">
                             <tr>
                                 <th scope="col" class="dt-center">No</th>

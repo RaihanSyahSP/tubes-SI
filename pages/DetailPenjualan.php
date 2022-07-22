@@ -5,6 +5,9 @@ $_SESSION['current_page'] = "Detail Penjualan";
 <?php require_once('../functions/functions.php'); ?>
 <?php
 // checkLogin();
+if (!isset($_SESSION["id_pegawai"])) {
+    header("Location: ../index.php?error=4");
+}
 ?>
 
 
@@ -20,7 +23,7 @@ $_SESSION['current_page'] = "Detail Penjualan";
         <div class="row">
             <?php navbar() ?>;
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                     <h1 class="h2">Data Detail Penjualan</h1>
                 </div>
 
@@ -59,8 +62,8 @@ $_SESSION['current_page'] = "Detail Penjualan";
                                     <td class="text-center">Rp <?php echo number_format($row["harga_satuan"], 0, ",", ".");
                                                                 ?></td>
                                     <td>
-                                        <a href="mhs-form-edit.php?id_penjualan=<?php echo $row["id_penjualan"] ?>" class="badge bg-info"><i class="fas fa-pen"></i></a>
-                                        <a href="mhs-konfirmasi-hapus.php?id_penjualan=<?php echo $row["id_penjualan"] ?>" class="badge bg-danger"><i class="fas fa-trash-can"></i></a>
+                                        <a href="detailpenjualan-form-edit.php?id=<?php echo $row["id"] ?>" class="badge bg-info"><i class="fas fa-pen"></i></a>
+                                        <a href="detailpenjualan-konfirmasi-hapus.php?id_penjualan=<?php echo $row["id"] ?>" class="badge bg-danger"><i class="fas fa-trash-can"></i></a>
                                     </td>
                                 </tr>
                             <?php

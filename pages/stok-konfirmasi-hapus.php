@@ -1,13 +1,15 @@
 <?php
 session_start();
-$_SESSION['current_page'] = "Pegawai";
+$_SESSION['current_page'] = "Stok Bahan";
 ?>
 <?php include_once '../db/dbConfig.php'; ?>
 <?php require_once '../functions/functions.php'; ?>
 <?php
 // checkLogin();
+if (!isset($_SESSION["id_pegawai"])) {
+    header("Location: ../index.php?error=4");
+}
 ?>
-<!-- ini ada check login -->
 
 <!doctype html>
 <html lang="en">
@@ -24,37 +26,42 @@ $_SESSION['current_page'] = "Pegawai";
                     <h1 class="h2">Hapus Data Pegawai</h1>
                 </div>
                 <?php
-                if (isset($_GET["id_pegawai"])) {
-                    $idPegawai = $mysqli->escape_string($_GET["id_pegawai"]);
-                    // $data = getMahasiswa($kd_mk);
-                    if ($data = getDataPegawai($idPegawai)) {
+                if (isset($_GET["id_stok"])) {
+                    $id_stok = $mysqli->escape_string($_GET["id_stok"]);
+                    if ($data = getDataStok($id_stok)) {
                 ?>
-                        <form method="POST" name="form-hapus-mhs" action="pegawai-hapus.php">
-                            <input type="hidden" name="id_pegawai" value="<?php echo $data["id_pegawai"]; ?>">
+                        <form method="POST" name="form-hapus-stok" action="stok-hapus.php">
+                            <input type="hidden" name="id_stok" value="<?php echo $data["id_stok"]; ?>">
                             <div class="row mb-3">
-                                <label for="inputIdPegawai" class="col-sm-2 col-form-label">ID Pegawai</label>
+                                <label for="inputIdStok" class="col-sm-2 col-form-label">ID Pegawai</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputIdPegawai" readonly value="<?php echo $data["id_pegawai"]; ?>">
+                                    <input type="text" class="form-control" id="inputIdStok" readonly value="<?php echo $data["id_stok"]; ?>">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputAlamatPegawai" class="col-sm-2 col-form-label">Alamat Pegawai</label>
+                                <label for="inputNamaBahan" class="col-sm-2 col-form-label">Nama Bahan</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputAlamatPegawai" readonly name="inputAlamatPegawai" value="<?php echo $data["alamat"]; ?>">
+                                    <input type="text" class="form-control" id="inputNamaBahan" readonly name="inputNamaBahan" value="<?php echo $data["nama_bahan"]; ?>">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputNamaPegawai" class="col-sm-2 col-form-label">Nama Pegawai</label>
+                                <label for="inputQty" class="col-sm-2 col-form-label">Qty</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="inputNamaPegawai" readonly name="inputNamaPegawai" value="<?php echo $data["no_hp"]; ?>">
+                                    <input type="text" class="form-control" id="inputQty" readonly name="inputQty" value="<?php echo $data["qty"]; ?>">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputSatuan" class="col-sm-2 col-form-label">Satuan</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputSatuan" readonly name="inputSatuan" value="<?php echo $data["satuan"]; ?>">
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary" name="tblHapus">Hapus</button>
-                            <a href="Pegawai.php"><button type="button" class="btn btn-danger">Kembali</button></a>
+                            <a href="StokBahan.php"><button type="button" class="btn btn-danger">Kembali</button></a>
                         </form>
                     <?php
                     } else {
-                        echo "<div class='alert alert-danger' role='alert'>Data kode mata kuliah tidak ditemukan</div>";
+                        echo "<div class='alert alert-danger' role='alert'>Data ID Stok tidak ditemukan</div>";
                     }
                     ?>
                 <?php

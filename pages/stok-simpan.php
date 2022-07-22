@@ -6,8 +6,10 @@ $_SESSION['current_page'] = "Stok Bahan";
 <?php require_once '../functions/functions.php'; ?>
 <?php
 // checkLogin();
+if (!isset($_POST["tblSimpan"])) {
+    header("Location: StokBahan.php");
+}
 ?>
-<!-- ini ada check login -->
 <!doctype html>
 <html lang="en">
 
@@ -35,7 +37,39 @@ $_SESSION['current_page'] = "Stok Bahan";
 
                         $pesanSalah = '';
 
-                        // //validasi nilai
+                        // validasi stok
+                        
+                        if (!preg_match("/^[S]{1}[0-9]{4}$/", $id_stok)) {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan, format id stok harus diawali huruf S dan 4 angka.                 
+                                </div>";
+                            $adaError = true;
+                        }
+
+                        $regexNama = "/^[a-z ,.'-]+$/i";
+                        if (!preg_match($regexNama, $nama_bahan)) {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan, format nama bahan tidak boleh angka.                 
+                                </div>";
+                            $adaError = true;
+                        }
+
+                        if (!preg_match("/^[0-9]*$/", $qty)) {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan, format quantity tidak boleh mengandung huruf.                 
+                                </div>";
+                            $adaError = true;
+                        }
+
+                        $regexSatuan = "/^[a-z ,.'-]+$/i";
+                        if (!preg_match($regexSatuan, $satuan)) {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan, format satuan tidak boleh angka.                 
+                                </div>";
+                            $adaError = true;
+                        }
+
+                        
                         // if (strlen($kd_nilai) > 4 || strlen($kd_nilai) < 4) {
                         //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
                         //             <strong>Gagal!</strong> Data gagal disimpan kode nilai harus terdiri dari 4 karakter.                 
@@ -51,13 +85,6 @@ $_SESSION['current_page'] = "Stok Bahan";
                         //     $adaError = true;
                         // }
 
-
-                        // if (!preg_match("/^[0-9]*$/", $nilai)) {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan nilai tidak boleh mengandung huruf.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
 
                         // if ($nim == 'Pilih NIM') {
                         //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
@@ -88,8 +115,8 @@ $_SESSION['current_page'] = "Stok Bahan";
                         // }
 
 
-                        // if ($adaError == false) {
-                        $sql = "INSERT INTO stok_bahan VALUES ('$id_stok', $nama_bahan', '$qty','$satuan')";
+                        if ($adaError == false) {
+                        $sql = "INSERT INTO stok_bahan VALUES ('$id_stok', '$nama_bahan', '$qty', '$satuan')";
                         $res = $mysqli->query($sql);
 
                         if ($res) {
@@ -110,7 +137,7 @@ $_SESSION['current_page'] = "Stok Bahan";
                                 <a href='javascript:history.back()'><button type='button' class='btn btn-primary'>Kembali</button></a>
                                 ";
                         }
-                        // } else {
+                        } else {
                 ?>
                         <div class="container">
                             <div class="row">
@@ -121,7 +148,7 @@ $_SESSION['current_page'] = "Stok Bahan";
                             </div>
                         </div>
                 <?php
-                        // }
+                        }
                     }
                 } else {
                     echo "Gagal koneksi"  . $mysqli->connect_error   . "<br>";

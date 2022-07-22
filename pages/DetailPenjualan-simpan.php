@@ -6,8 +6,11 @@ $_SESSION['current_page'] = "Detail Penjualan";
 <?php require_once '../functions/functions.php'; ?>
 <?php
 // checkLogin();
+if (!isset($_POST["tblSimpan"])) {
+    header("Location: DetailPenjualan.php");
+}
 ?>
-<!-- ini ada check login -->
+
 <!doctype html>
 <html lang="en">
 
@@ -33,83 +36,53 @@ $_SESSION['current_page'] = "Detail Penjualan";
 
                         $pesanSalah = '';
 
-                        // //validasi nilai
-                        // if (strlen($kd_nilai) > 4 || strlen($kd_nilai) < 4) {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan kode nilai harus terdiri dari 4 karakter.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
 
-                        // $formaKdNilai = substr($kd_nilai, 0, 1);
-                        // if ($formaKdNilai != 'N') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan kode nilai harus diawali oleh huruf N.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
+                        //validasi detail penjualan
+                        if ($id_penjualan == "") {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan! pilih Id Penjualan terlebih dahulu.                 
+                                </div>";
+                            $adaError = true;
+                        }
 
+                        if ($nama_menu == "") {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan! pilih Nama Menu terlebih dahulu.                 
+                                </div>";
+                            $adaError = true;
+                        }
 
-                        // if (!preg_match("/^[0-9]*$/", $nilai)) {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan nilai tidak boleh mengandung huruf.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
+                        if (!preg_match("/^[0-9]*$/", $harga_satuan)) {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan! format harga satuan tidak boleh mengandung huruf.                 
+                                </div>";
+                            $adaError = true;
+                        }
 
-                        // if ($nim == 'Pilih NIM') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih NIM terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($kd_matkul == 'Pilih Kode Mata Kuliah') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih kode mata kuliah terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($index == 'Pilih Index Nilai') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih index terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($keterangan == 'Pilih Keterangan') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih keterangan terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-
-                        // if ($adaError == false) {
-                        $sql = "INSERT INTO detail_penjualan VALUES ('$id_penjualan', '$nama_menu', '$harga_satuan')";
+                        if ($adaError == false) {
+                        $sql = "INSERT INTO detail_penjualan(id_penjualan, id_menu, harga_satuan) VALUES ('$id_penjualan', '$nama_menu', '$harga_satuan')";
                         $res = $mysqli->query($sql);
-                        var_dump($res);
+                    
 
-                        if ($res) {
-                            if ($mysqli->affected_rows > 0) {
+                            if ($res) {
+                                if ($mysqli->affected_rows > 0) {
+                                    echo "
+                                        <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                                            <strong>Berhasil!</strong> Data berhasil disimpan.    
+                                        </div>
+                                        <a href='DetailPenjualan.php'>
+                                                <button type='button' class='btn btn-success'>View Detail Penjualan</button>
+                                        </a>";
+                                }
+                            } else {
                                 echo "
-                                    <div class='alert alert-success alert-dismissible fade show' role='alert'>
-                                        <strong>Berhasil!</strong> Data berhasil disimpan.    
+                                    <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                        <strong>Gagal!</strong> Data gagal disimpan, ID Menu sudah ada.                 
                                     </div>
-                                    <a href='Menu.php'>
-                                            <button type='button' class='btn btn-success'>View Nilai</button>
-                                    </a>";
+                                    <a href='javascript:history.back()'><button type='button' class='btn btn-primary'>Kembali</button></a>
+                                    ";
                             }
                         } else {
-                            echo "
-                                <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan, ID Menu sudah ada udah ada.                 
-                                </div>
-                                <a href='javascript:history.back()'><button type='button' class='btn btn-primary'>Kembali</button></a>
-                                ";
-                        }
-                        // } else {
                 ?>
                         <div class="container">
                             <div class="row">
@@ -120,7 +93,7 @@ $_SESSION['current_page'] = "Detail Penjualan";
                             </div>
                         </div>
                 <?php
-                        // }
+                        }
                     }
                 } else {
                     echo "Gagal koneksi"  . $mysqli->connect_error   . "<br>";

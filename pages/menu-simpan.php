@@ -10,7 +10,7 @@ if (!isset($_POST["tblSimpan"])) {
     header("Location: Menu.php");
 }
 ?>
-<!-- ini ada check login -->
+
 <!doctype html>
 <html lang="en">
 
@@ -51,22 +51,29 @@ if (!isset($_POST["tblSimpan"])) {
                         //         </div>";
                         //     $adaError = true;
                         // }
+            
+
+                        if (strlen($nama_menu) < 2 ){
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan! Nama menu harus lebih dari 2 karakter.                 
+                                </div>";
+                            $adaError = true;
+                        } 
 
 
-                        // if (!preg_match("/^[0-9]*$/", $nilai)) {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan nilai tidak boleh mengandung huruf.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($nim == 'Pilih NIM') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih NIM terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
+                        if (!preg_match("/^[M]{1}[0-9]{4}$/", $id_menu)) {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan! Format Id menu harus diawali huruf M dan diikuti 4 angka.                 
+                                </div>";
+                            $adaError = true;
+                        }
+                        
+                        if ($jenis_menu == 'defaultJenisMenu') {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan! Pilih Jenis Menu terlebih dahulu.                 
+                                </div>";
+                            $adaError = true;
+                        }
                         // if ($kd_matkul == 'Pilih Kode Mata Kuliah') {
                         //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
                         //             <strong>Gagal!</strong> Data gagal disimpan pilih kode mata kuliah terlebih dahulu.                 
@@ -81,12 +88,6 @@ if (!isset($_POST["tblSimpan"])) {
                         //     $adaError = true;
                         // }
 
-                        if ($jenis_menu == 'Pilih Jenis Menu') {
-                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan pilih Jenis Menu terlebih dahulu.                 
-                                </div>";
-                            $adaError = true;
-                        }
 
 
                         if ($adaError == false) {

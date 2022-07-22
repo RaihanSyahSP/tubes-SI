@@ -6,8 +6,10 @@ $_SESSION['current_page'] = "Stok Bahan";
 <?php require_once '../functions/functions.php'; ?>
 <?php
 // checkLogin();
+if (!isset($_SESSION["id_pegawai"])) {
+    header("Location: ../index.php?error=4");
+}
 ?>
-<!-- ini ada check login -->
 
 <!doctype html>
 <html lang="en">
@@ -27,7 +29,7 @@ $_SESSION['current_page'] = "Stok Bahan";
                     <div class="row mb-3">
                         <label for="inputIdStok" class="col-sm-2 col-form-label">ID Stok</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputIdStok" name="inputIdStok" required>
+                            <input type="text" class="form-control" id="inputIdStok" name="inputIdStok" placeholder="Diisi huruf 'S' diikuti 4 angka. Contoh: S1234" required>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -39,14 +41,15 @@ $_SESSION['current_page'] = "Stok Bahan";
                     <div class="row mb-3">
                         <label for="inputQty" class="col-sm-2 col-form-label">Qty</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputQty" name="inputQty" required>
+                            <input type="text" class="form-control" id="inputQty" name="inputQty" placeholder="Jumlah berat/volume" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="inputSatuan" class="col-sm-2 col-form-label">Satuan</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputSatuan" name="inputSatuan" required>
+                            <input type="text" class="form-control" id="inputSatuan" name="inputSatuan" placeholder="Satuan berat/volume. Contoh: gr, kg, liter, dsb." required>
                         </div>
+
                     </div>
                     <button type="submit" class="btn btn-primary" name="tblSimpan">Simpan</button>
                     <a href="StokBahan.php"><button type="button" class="btn btn-danger">Kembali</button></a>

@@ -1,15 +1,15 @@
 <?php
 session_start();
-$_SESSION['current_page'] = "Stok Bahan";
+$_SESSION['current_page'] = "Pengeluaran";
 ?>
 <?php require_once '../functions/functions.php'; ?>
 <?php
 //checkLogin();
 if (!isset($_POST["tblEdit"])) {
-    header("Location: StokBahan.php");
+    header("Location: Pengeluaran.php");
 }
 ?>
-
+<!-- ini ada check login -->
 <!doctype html>
 <html lang="en">
 
@@ -22,52 +22,40 @@ if (!isset($_POST["tblEdit"])) {
             <?php navbar() ?>;
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Edit Data Stok</h1>
+                    <h1 class="h2">Edit Data Pengeluaran</h1>
                 </div>
                 <?php
                 if (isset($_POST["tblEdit"])) {
                     if ($mysqli->connect_errno == 0) {
-                        $idStok = $mysqli->escape_string($_POST["inputIdStok"]);
-                        $namaBahan = $mysqli->escape_string($_POST["inputNamaBahan"]);
-                        $qty = $mysqli->escape_string($_POST["inputQty"]);
-                        $satuan = $mysqli->escape_string($_POST["inputSatuan"]);
+                        $idPengeluaran = $mysqli->escape_string($_POST["inputIdPengeluaran"]);
+                        $tanggal = $mysqli->escape_string($_POST["inputTanggal"]);
+                        $harga = $mysqli->escape_string($_POST["inputHarga"]);
+                        $idPegawai = $mysqli->escape_string($_POST["inputIdPegawai"]);
                         $adaError = false;
 
                         $pesanSalah = '';
+                        //validasi pengeluaran
+                        // if (!preg_match("/^[P]{1}[0-9]{4}$/", $idPengeluaran)) {
+                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                        //             <strong>Gagal!</strong> Data gagal disimpan! Format id pengeluaran harus diawali huruf P dan 4 angka.                 
+                        //         </div>";
+                        //     $adaError = true;
+                        // }
 
-                        // validasi stok
-                        
-                        if (!preg_match("/^[S]{1}[0-9]{4}$/", $idStok)) {
+                        if (!preg_match("/^[0-9]*$/", $harga)) {
                             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan, format id stok harus diawali huruf S dan 4 angka.                 
+                                    <strong>Gagal!</strong> Data gagal disimpan! Format total harga tidak boleh mengandung huruf.                 
                                 </div>";
                             $adaError = true;
                         }
 
-                        $regexNama = "/^[a-z ,.'-]+$/i";
-                        if (!preg_match($regexNama, $namaBahan)) {
+                        if ($tanggal > date('Y-m-d')) {
                             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan, format nama bahan tidak boleh angka.                 
-                                </div>";
+                                    <strong>Gagal!</strong> Data gagal disimpan! Format tanggal pengeluaran yang dipilih melebihi tanggal sekarang.                 
+                                </div>'";
                             $adaError = true;
                         }
 
-                        if (!preg_match("/^[0-9]*$/", $qty)) {
-                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan, format quantity tidak boleh mengandung huruf.                 
-                                </div>";
-                            $adaError = true;
-                        }
-
-                        $regexNama = "/^[a-z ,.'-]+$/i";
-                        if (!preg_match($regexNama, $satuan)) {
-                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan, format satuan tidak boleh angka.                 
-                                </div>";
-                            $adaError = true;
-                        }
-                        
-                        //         // validasi kode matkul
                         //         $pesanSalah = '';
                         //         if (strlen($kdMatkul) > 7 || strlen($kdMatkul) < 7) {
                         //             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
@@ -102,7 +90,7 @@ if (!isset($_POST["tblEdit"])) {
                     }
 
                     if ($adaError == false) {
-                        $sql = "UPDATE stok_bahan SET id_stok = '$idStok', nama_bahan = '$namaBahan', qty = '$qty', satuan='$satuan' WHERE id_stok = '$idStok'";
+                        $sql = "UPDATE pengeluaran SET id_pengeluaran = '$idPengeluaran', tanggal = '$tanggal', total_harga='$harga', id_pegawai='$idPegawai' WHERE id_pengeluaran = '$idPengeluaran'";
                         $res = $mysqli->query($sql);
 
                         if ($res) {
@@ -111,14 +99,22 @@ if (!isset($_POST["tblEdit"])) {
                                     <div class='alert alert-success alert-dismissible fade show' role='alert'>
                                         <strong>Berhasil!</strong> Data berhasil disimpan.    
                                     </div>
-                                    <a href='StokBahan.php'>
-                                            <button type='button' class='btn btn-success'>View Stok</button>
+                                    <a href='Pengeluaran.php'>
+                                            <button type='button' class='btn btn-success'>View Pengeluaran</button>
+                                    </a>";
+                            } else {
+                                echo "
+                                    <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                                        <strong>Berhasil!</strong> Data berhasil disimpan, tanpa perubahan data.    
+                                    </div>
+                                    <a href='Pengeluaran.php'>
+                                        <button type='button' class='btn btn-success'>View Pengeluaran</button>
                                     </a>";
                             }
                         } else {
                             echo "
                                 <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan, id stok sudah ada.                 
+                                    <strong>Gagal!</strong> Data gagal disimpan, id pengeluaran sudah ada.                 
                                 </div>
                                 <a href='javascript:history.back()'><button type='button' class='btn btn-primary'>Kembali</button></a>
                                 ";
@@ -142,7 +138,6 @@ if (!isset($_POST["tblEdit"])) {
             </main>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
 </body>

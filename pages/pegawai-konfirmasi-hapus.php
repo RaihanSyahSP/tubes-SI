@@ -6,8 +6,10 @@ $_SESSION['current_page'] = "Pegawai";
 <?php require_once '../functions/functions.php'; ?>
 <?php
 // checkLogin();
+if (!isset($_SESSION["id_pegawai"])) {
+    header("Location: ../index.php?error=4");
+}
 ?>
-<!-- ini ada check login -->
 
 <!doctype html>
 <html lang="en">

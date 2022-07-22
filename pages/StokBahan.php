@@ -5,6 +5,9 @@ $_SESSION['current_page'] = "Stok Bahan";
 <?php require_once('../functions/functions.php'); ?>
 <?php
 // checkLogin();
+if (!isset($_SESSION["id_pegawai"])) {
+    header("Location: ../index.php?error=4");
+}
 ?>
 
 
@@ -20,7 +23,7 @@ $_SESSION['current_page'] = "Stok Bahan";
         <div class="row">
             <?php navbar() ?>;
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                     <h1 class="h2">Data Stok Bahan</h1>
                 </div>
 
@@ -59,7 +62,7 @@ $_SESSION['current_page'] = "Stok Bahan";
                                     <td class="text-center"><?php echo $stok["satuan"]; ?></td>
                                     <td class="text-center">
                                         <a href="stok-form-edit.php?id_stok=<?php echo $stok["id_stok"] ?>" class="badge bg-info"><i class="fas fa-pen"></i></a>
-                                        <a href="mhs-konfirmasi-hapus.php?id_stok=<?php echo $stok["id_stok"] ?>" class="badge bg-danger"><i class="fas fa-trash-can"></i></a>
+                                        <a href="stok-konfirmasi-hapus.php?id_stok=<?php echo $stok["id_stok"] ?>" class="badge bg-danger"><i class="fas fa-trash-can"></i></a>
                                     </td>
                                 </tr>
                             <?php

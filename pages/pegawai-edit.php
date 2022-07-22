@@ -5,8 +5,11 @@ $_SESSION['current_page'] = "Pegawai";
 <?php require_once '../functions/functions.php'; ?>
 <?php
 //checkLogin();
+if (!isset($_POST["tblEdit"])) {
+    header("Location: Pegawai.php");
+}
 ?>
-<!-- ini ada check login -->
+
 <!doctype html>
 <html lang="en">
 
@@ -29,6 +32,45 @@ $_SESSION['current_page'] = "Pegawai";
                         $alamat = $mysqli->escape_string($_POST["inputAlamat"]);
                         $noHp = $mysqli->escape_string($_POST["inputNoHp"]);
                         $adaError = false;
+                        $pesanSalah = "";
+
+                        // if (!preg_match("/^[B]{1}[A]{1}[0-9]{3}$/", $idPegawai)) {
+                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                        //             <strong>Gagal!</strong> Data gagal disimpan format id pegawai harus diawali huruf BA dan 3 angka.                 
+                        //         </div>";
+                        //     $adaError = true;
+                        // }
+
+
+                        if(strlen($namaPegawai) < 2){
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan nama pegawai harus lebih dari 2 karakter.                 
+                                </div>";
+                            $adaError = true;
+                        }
+
+                        $regexNama = "/^[a-z ,.'-]+$/i";
+                        if (!preg_match($regexNama, $namaPegawai)) {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan, format nama tidak boleh angka.                 
+                                </div>";
+                            $adaError = true;
+                        }
+
+                        if(strlen($alamat) < 5){
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan nama alamat harus lebih dari 5 karakter.                 
+                                </div>";
+                            $adaError = true;
+                        }
+
+                        $regexNoHp = "/^(\+62|62|0)8[1-9][0-9]{6,9}$/";
+                        if(!preg_match($regexNoHp, $noHp)){
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan format nomor hp harus diawali +62, 62, atau 0 dan terdiri dari 10-13 angka.                 
+                                </div>";
+                            $adaError = true;
+                        }
 
                         //         // validasi kode matkul
                         //         $pesanSalah = '';
@@ -37,9 +79,9 @@ $_SESSION['current_page'] = "Pegawai";
                         //                     <strong>Gagal!</strong> Data gagal disimpan kode mata kuliah harus 7 karakter.                 
                         //                 </div>";
                         //             $adaError = true;
-                        //         }
+                        
 
-                        //         if (!preg_match("/^[A-Z0-9]*$/", $kdMatkul)) {
+                                // if (!preg_match("/^[A-Z0-9]*$/", $kdMatkul)) {
                         //             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
                         //                     <strong>Gagal!</strong> Data gagal disimpan, format mata kuliah harus kapital.                 
                         //                 </div>";

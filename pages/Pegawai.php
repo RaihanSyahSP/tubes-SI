@@ -5,6 +5,9 @@ $_SESSION['current_page'] = "Pegawai";
 <?php require_once('../functions/functions.php'); ?>
 <?php
 // checkLogin();
+if (!isset($_SESSION["id_pegawai"])) {
+    header("Location: ../index.php?error=4");
+}
 ?>
 
 <!doctype html>
@@ -18,7 +21,7 @@ $_SESSION['current_page'] = "Pegawai";
         <div class="row">
             <?php navbar() ?>;
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                     <h1 class="h2">Data Pegawai</h1>
                 </div>
 

@@ -6,8 +6,10 @@ $_SESSION['current_page'] = "Penjualan";
 <?php require_once '../functions/functions.php'; ?>
 <?php
 // checkLogin();
+if (!isset($_SESSION["id_pegawai"])) {
+    header("Location: ../index.php?error=4");
+}
 ?>
-<!-- ini ada check login -->
 
 <!doctype html>
 <html lang="en">
@@ -27,7 +29,7 @@ $_SESSION['current_page'] = "Penjualan";
                     <div class="row mb-3">
                         <label for="inputIdPenjualan" class="col-sm-2 col-form-label">ID Penjualan</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputIdPenjualan" name="inputIdPenjualan" required>
+                            <input type="text" class="form-control" id="inputIdPenjualan" name="inputIdPenjualan" placeholder="Diisi huruf 'P' diikuti 4 angka. Contoh: P1234" required>
                         </div>
                     </div>
                     <div class=" row mb-3">
@@ -43,13 +45,21 @@ $_SESSION['current_page'] = "Penjualan";
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputIdPegawai" class="col-sm-2 col-form-label">ID Pegawai</label>
+                        <label for="inputIdPegawai" class="col-sm-2 col-form-label">Nama Pegawai</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputIdPegawai" name="inputIdPegawai" required>
+                            <select class="form-control" id="inputIdPegawai" name="inputIdPegawai">
+                                <option value="defaultIdPegawai">Pilih Nama Pegawai</option>
+                                <?php
+                                    $data = getListPegawai();
+                                    foreach ($data as $row) {
+                                        echo "<option value=\"" . $row["id_pegawai"] . "\">" . $row["nama_pegawai"] . "</option>";
+                                    }
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary" name="tblSimpan">Simpan</button>
-                    <a href="pegawai.php"><button type="button" class="btn btn-danger">Kembali</button></a>
+                    <a href="Penjualan.php"><button type="button" class="btn btn-danger">Kembali</button></a>
                 </form>
             </main>
         </div>

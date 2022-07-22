@@ -6,8 +6,10 @@ $_SESSION['current_page'] = "Pengeluaran";
 <?php require_once '../functions/functions.php'; ?>
 <?php
 // checkLogin();
+if (!isset($_POST["tblSimpan"])) {
+    header("Location: Pengeluaran.php");
+}
 ?>
-<!-- ini ada check login -->
 <!doctype html>
 <html lang="en">
 
@@ -31,8 +33,40 @@ $_SESSION['current_page'] = "Pengeluaran";
                         $id_pegawai = $mysqli->escape_string($_POST["inputIdPegawai"]);
                         $adaError = false;
 
-
                         $pesanSalah = '';
+
+                        $regexIdPengeluaran = "/^[K]{1}[0-9]{4}$/";
+                        if (!preg_match($regexIdPengeluaran, $id_pengeluaran)) {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan! Format Id menu harus diawali huruf K dan diikuti 4 angka.                 
+                                </div>";
+                            $adaError = true;
+                        }
+
+                        //validasi tanggal lahir
+                        if ($tanggal > date('Y-m-d')) {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan tanggal lahir melebihi tanggal hari ini.                 
+                                </div>'";
+                            $adaError = true;
+                        }
+
+                        $regexTotalHarga = "/^[0-9]*$/";
+                        if (!preg_match($regexTotalHarga, $total_harga)) {
+                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                    <strong>Gagal!</strong> Data gagal disimpan! Format total harga harus berupa angka.                 
+                                </div>";
+                            $adaError = true;
+                        }
+
+                        // if ($namaPegawai == 'Pilih Nama Pegawai') {
+                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                        //             <strong>Gagal!</strong> Data gagal disimpan! Pilih Nama Pegawai terlebih dahulu.                 
+                        //         </div>";
+                        //     $adaError = true;
+                        // }
+
+
 
                         // //validasi nilai
                         // if (strlen($kd_nilai) > 4 || strlen($kd_nilai) < 4) {
@@ -87,41 +121,43 @@ $_SESSION['current_page'] = "Pengeluaran";
                         // }
 
 
-                        // if ($adaError == false) {
-                        $sql = "INSERT INTO pengeluaran VALUES ('$id_pengeluaran', '$tanggal', '$total_harga', '$id_pegawai')";
-                        $res = $mysqli->query($sql);
-                        var_dump($res);
+                        if ($adaError == false) {
+                            $sql = "INSERT INTO pengeluaran VALUES ('$id_pengeluaran', '$tanggal', '$total_harga', '$id_pegawai')";
+                            $res = $mysqli->query($sql);
 
-                        if ($res) {
-                            if ($mysqli->affected_rows > 0) {
+                            if ($res) {
+                                if ($mysqli->affected_rows > 0) {
+                                    echo "
+                                        <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                                            <strong>Berhasil!</strong> Data berhasil disimpan.    
+                                        </div>
+                                        <a href='Pengeluaran.php'>
+                                            <button type='button' class='btn btn-success'>View Pengeluaran</button>
+                                        </a>
+                                        ";
+                                }
+                            } else {
                                 echo "
-                                    <div class='alert alert-success alert-dismissible fade show' role='alert'>
-                                        <strong>Berhasil!</strong> Data berhasil disimpan.    
+                                    <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                        <strong>Gagal!</strong> Data gagal disimpan, ID Pengeluaran sudah ada.                 
                                     </div>
-                                    <a href='Menu.php'>
-                                            <button type='button' class='btn btn-success'>View Nilai</button>
-                                    </a>";
+                                    <a href='javascript:history.back()'>
+                                        <button type='button' class='btn btn-primary'>Kembali</button>
+                                    </a>
+                                    ";
                             }
                         } else {
-                            echo "
-                                <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan, ID Menu sudah ada udah ada.                 
-                                </div>
-                                <a href='javascript:history.back()'><button type='button' class='btn btn-primary'>Kembali</button></a>
-                                ";
-                        }
-                        // } else {
                 ?>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <?php echo $pesanSalah; ?>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <?php echo $pesanSalah; ?>
+                                    </div>
+                                    <a href='javascript:history.back()'><button type='button' class='btn btn-primary'>Kembali</button></a>
                                 </div>
-                                <a href='javascript:history.back()'><button type='button' class='btn btn-primary'>Kembali</button></a>
                             </div>
-                        </div>
                 <?php
-                        // }
+                        }
                     }
                 } else {
                     echo "Gagal koneksi"  . $mysqli->connect_error   . "<br>";
