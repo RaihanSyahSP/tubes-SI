@@ -33,6 +33,14 @@ if (!isset($_POST["tblSimpan"])) {
                         $harga_satuan = $mysqli->escape_string($_POST["inputHargaSatuan"]);
                         $adaError = false;
 
+                        $totalHarga = getListPenjualan();
+                        foreach ($totalHarga as $value) {
+                            if ($value["id_penjualan"] == $id_penjualan) {
+                                $getTotalHarga = $value["total_harga"];
+                            }
+                        }
+                        $getTotalHarga = $getTotalHarga + $harga_satuan;
+                        $update = $mysqli -> query("UPDATE penjualan SET total_harga='$getTotalHarga' WHERE id_penjualan='$id_penjualan'");
 
                         $pesanSalah = '';
 
@@ -54,7 +62,7 @@ if (!isset($_POST["tblSimpan"])) {
 
                         if (!preg_match("/^[0-9]*$/", $harga_satuan)) {
                             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan! format harga satuan tidak boleh mengandung huruf.                 
+                                    <strong>Gagal!</strong> Data gagal disimpan! format harga menu tidak boleh mengandung huruf.                 
                                 </div>";
                             $adaError = true;
                         }

@@ -68,7 +68,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputHargaSatuan" class="col-sm-2 col-form-label">Harga Satuan</label>
+                                <label for="inputHargaSatuan" class="col-sm-2 col-form-label">Harga Menu</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="inputHargaSatuan" name="inputHargaSatuan" value="<?= $dataDPenjualan["harga_satuan"] ?>" required>
                                 </div>

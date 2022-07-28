@@ -45,7 +45,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="totalHarga" class="col-sm-2 col-form-label">Total Harga</label>
+                                <label for="totalHarga" class="col-sm-2 col-form-label">Total Pendapatan</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="totalHarga" readonly name="totalHarga" value="<?php echo $data["total_harga"]; ?>">
                                 </div>

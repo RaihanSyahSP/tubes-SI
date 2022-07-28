@@ -29,7 +29,6 @@ if (!isset($_POST["tblEdit"])) {
                     if ($mysqli->connect_errno == 0) {
                         $idPenjualan = $mysqli->escape_string($_POST["inputIdPenjualan"]);
                         $tanggal = $mysqli->escape_string($_POST["inputTanggal"]);
-                        $harga = $mysqli->escape_string($_POST["inputHarga"]);
                         $idPegawai = $mysqli->escape_string($_POST["inputIdPegawai"]);
                         $adaError = false;
 
@@ -42,12 +41,12 @@ if (!isset($_POST["tblEdit"])) {
                         //     $adaError = true;
                         // }
 
-                        if (!preg_match("/^[0-9]*$/", $harga)) {
-                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan! Format total harga tidak boleh mengandung huruf.                 
-                                </div>";
-                            $adaError = true;
-                        }
+                        // if (!preg_match("/^[0-9]*$/", $harga)) {
+                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                        //             <strong>Gagal!</strong> Data gagal disimpan! Format total harga tidak boleh mengandung huruf.                 
+                        //         </div>";
+                        //     $adaError = true;
+                        // }
 
                         if ($tanggal > date('Y-m-d')) {
                             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>

@@ -1,6 +1,7 @@
 <?php require_once('../functions/functions.php'); ?>
 <?php
 session_start();
+$_SESSION["current_page"] = "Index Admin";
 if (!isset($_SESSION["id_pegawai"])) {
     header("Location: ../index.php?error=4");
 }

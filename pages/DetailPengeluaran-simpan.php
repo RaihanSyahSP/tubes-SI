@@ -31,8 +31,27 @@ if (!isset($_POST["tblSimpan"])) {
                         $id_pengeluaran = $mysqli->escape_string($_POST["inputIdPengeluaran"]);
                         $stok_bahan = $mysqli->escape_string($_POST["inputStokBahan"]);
                         $harga_satuan = $mysqli->escape_string($_POST["inputHargaSatuan"]);
-                        $adaError = false;
+                        $qty = $mysqli->escape_string($_POST["inputQty"]);
+                        
+                        $add_qty = getListStok();
+                        foreach ($add_qty as $value) {
+                            if ($value["id_stok"] == $stok_bahan) {
+                                $getQty = $value["qty"];
+                            }
+                        }
+                        $getQty = $getQty + $qty;
+                        $update = $mysqli->query("UPDATE stok_bahan SET qty='$getQty' WHERE id_stok='$stok_bahan'");
 
+                        $totalHarga = getListPengeluaran();
+                        foreach ($totalHarga as $value) {
+                            if ($value["id_pengeluaran"] == $id_pengeluaran) {
+                                $getTotalHarga = $value["total_harga"];
+                            }
+                        }
+                        $getTotalHarga = $getTotalHarga + $harga_satuan;
+                        $update = $mysqli -> query("UPDATE pengeluaran SET total_harga='$getTotalHarga' WHERE id_pengeluaran='$id_pengeluaran'");
+
+                        $adaError = false;
 
                         $pesanSalah = '';
 
@@ -52,87 +71,35 @@ if (!isset($_POST["tblSimpan"])) {
 
                         if (!preg_match("/^[0-9]*$/", $harga_satuan)) {
                             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan! format harga tidak boleh mengandung huruf.                 
+                                    <strong>Gagal!</strong> Data gagal disimpan! format biaya bahan tidak boleh mengandung huruf.                 
                                 </div>";
                             $adaError = true;
                         }
                         
-                        // //validasi nilai
-                        // if (strlen($kd_nilai) > 4 || strlen($kd_nilai) < 4) {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan kode nilai harus terdiri dari 4 karakter.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // $formaKdNilai = substr($kd_nilai, 0, 1);
-                        // if ($formaKdNilai != 'N') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan kode nilai harus diawali oleh huruf N.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-
-                        // if (!preg_match("/^[0-9]*$/", $nilai)) {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan nilai tidak boleh mengandung huruf.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($nim == 'Pilih NIM') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih NIM terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($kd_matkul == 'Pilih Kode Mata Kuliah') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih kode mata kuliah terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($index == 'Pilih Index Nilai') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih index terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($keterangan == 'Pilih Keterangan') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih keterangan terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
+                        
 
                         if ($adaError == false) {
-                        $sql = "INSERT INTO detail_pengeluaran(id_pengeluaran, id_stok, harga_satuan) VALUES ('$id_pengeluaran', '$stok_bahan', '$harga_satuan')";
-                        $res = $mysqli->query($sql);
-            
+                            $sql = "INSERT INTO detail_pengeluaran(id_pengeluaran, id_stok, harga_satuan) VALUES ('$id_pengeluaran', '$stok_bahan', '$harga_satuan')";
+                            $res = $mysqli->query($sql);
 
-                        if ($res) {
-                            if ($mysqli->affected_rows > 0) {
+                            if ($res) {
+                                if ($mysqli->affected_rows > 0) {
+                                    echo "
+                                        <div class='alert alert-success alert-dismissible fade show' role='alert'>
+                                            <strong>Berhasil!</strong> Data berhasil disimpan.    
+                                        </div>
+                                        <a href='DetailPengeluaran.php'>
+                                                <button type='button' class='btn btn-success'>View Detail Pengeluaran</button>
+                                        </a>";
+                                }
+                            } else {
                                 echo "
-                                    <div class='alert alert-success alert-dismissible fade show' role='alert'>
-                                        <strong>Berhasil!</strong> Data berhasil disimpan.    
+                                    <div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                                        <strong>Gagal!</strong> Data gagal disimpan, ID sudah ada udah ada.                 
                                     </div>
-                                    <a href='DetailPengeluaran.php'>
-                                            <button type='button' class='btn btn-success'>View Detail Pengeluaran</button>
-                                    </a>";
+                                    <a href='javascript:history.back()'><button type='button' class='btn btn-primary'>Kembali</button></a>
+                                    ";
                             }
-                        } else {
-                            echo "
-                                <div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan, ID sudah ada udah ada.                 
-                                </div>
-                                <a href='javascript:history.back()'><button type='button' class='btn btn-primary'>Kembali</button></a>
-                                ";
-                        }
                         } else {
                 ?>
                         <div class="container">

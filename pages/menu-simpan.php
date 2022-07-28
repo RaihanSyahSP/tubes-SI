@@ -35,22 +35,6 @@ if (!isset($_POST["tblSimpan"])) {
 
 
                         $pesanSalah = '';
-
-                        // //validasi nilai
-                        // if (strlen($kd_nilai) > 4 || strlen($kd_nilai) < 4) {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan kode nilai harus terdiri dari 4 karakter.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // $formaKdNilai = substr($kd_nilai, 0, 1);
-                        // if ($formaKdNilai != 'N') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan kode nilai harus diawali oleh huruf N.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
             
 
                         if (strlen($nama_menu) < 2 ){
@@ -74,20 +58,7 @@ if (!isset($_POST["tblSimpan"])) {
                                 </div>";
                             $adaError = true;
                         }
-                        // if ($kd_matkul == 'Pilih Kode Mata Kuliah') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih kode mata kuliah terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($index == 'Pilih Index Nilai') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih index terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
+                       
 
 
                         if ($adaError == false) {

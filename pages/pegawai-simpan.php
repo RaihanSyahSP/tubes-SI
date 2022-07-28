@@ -36,13 +36,6 @@ if (!isset($_POST["tblSimpan"])) {
 
                         $pesanSalah = '';
 
-                        // //validasi id pegawai
-                        // if (strlen($id_pegawai) > 5 || strlen($id_pegawai) < 5) {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan kode nilai harus terdiri dari 4 karakter.                 
-                        //         </div>";
-                        //     $adaError = true;
-                         // }
 
                         if (!preg_match("/^[B]{1}[A]{1}[0-9]{3}$/", $id_pegawai)) {
                             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
@@ -81,50 +74,6 @@ if (!isset($_POST["tblSimpan"])) {
                                 </div>";
                             $adaError = true;
                         }
-
-                        // $formIdPegawai = substr($id_pegawai, 0, 1);
-                        // if ($formIdPegawai != 'B') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan kode nilai harus diawali oleh huruf N.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-
-                        // if (!preg_match("/^[0-9]*$/", $nilai)) {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan nilai tidak boleh mengandung huruf.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($nim == 'Pilih NIM') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih NIM terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($kd_matkul == 'Pilih Kode Mata Kuliah') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih kode mata kuliah terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($index == 'Pilih Index Nilai') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih index terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($keterangan == 'Pilih Keterangan') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih keterangan terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
 
 
                         if ($adaError == false) {

@@ -29,7 +29,6 @@ if (!isset($_POST["tblEdit"])) {
                     if ($mysqli->connect_errno == 0) {
                         $idPengeluaran = $mysqli->escape_string($_POST["inputIdPengeluaran"]);
                         $tanggal = $mysqli->escape_string($_POST["inputTanggal"]);
-                        $harga = $mysqli->escape_string($_POST["inputHarga"]);
                         $idPegawai = $mysqli->escape_string($_POST["inputIdPegawai"]);
                         $adaError = false;
 
@@ -42,12 +41,12 @@ if (!isset($_POST["tblEdit"])) {
                         //     $adaError = true;
                         // }
 
-                        if (!preg_match("/^[0-9]*$/", $harga)) {
-                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan! Format total harga tidak boleh mengandung huruf.                 
-                                </div>";
-                            $adaError = true;
-                        }
+                        // if (!preg_match("/^[0-9]*$/", $harga)) {
+                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                        //             <strong>Gagal!</strong> Data gagal disimpan! Format total harga tidak boleh mengandung huruf.                 
+                        //         </div>";
+                        //     $adaError = true;
+                        // }
 
                         if ($tanggal > date('Y-m-d')) {
                             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
@@ -55,42 +54,10 @@ if (!isset($_POST["tblEdit"])) {
                                 </div>'";
                             $adaError = true;
                         }
-
-                        //         $pesanSalah = '';
-                        //         if (strlen($kdMatkul) > 7 || strlen($kdMatkul) < 7) {
-                        //             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //                     <strong>Gagal!</strong> Data gagal disimpan kode mata kuliah harus 7 karakter.                 
-                        //                 </div>";
-                        //             $adaError = true;
-                        //         }
-
-                        //         if (!preg_match("/^[A-Z0-9]*$/", $kdMatkul)) {
-                        //             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //                     <strong>Gagal!</strong> Data gagal disimpan, format mata kuliah harus kapital.                 
-                        //                 </div>";
-                        //             $adaError = true;
-                        //         }
-
-                        //         $jurusan = substr($kdMatkul, 0, 2);
-                        //         if (($jurusan != 'IF') && ($jurusan != 'TI') && ($jurusan != 'SI') && ($jurusan != 'MI') && ($jurusan != 'KA') && ($jurusan != 'TE')) {
-                        //             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //                     <strong>Gagal!</strong> Data gagal disimpan, 2 huruf pertama kode mata kuliah harus IF/TI/SI/MI/KA/TE.                 
-                        //                 </div>";
-                        //             $adaError = true;
-                        //         }
-
-
-                        //         //validasi nama matkul
-                        //         if (strlen($namaMatkul) < 5) {
-                        //             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //                     <strong>Gagal!</strong> Data gagal disimpan nama mata kuliah tidak valid.                 
-                        //                 </div>";
-                        //             $adaError = true;
-                        //         }
                     }
 
                     if ($adaError == false) {
-                        $sql = "UPDATE pengeluaran SET id_pengeluaran = '$idPengeluaran', tanggal = '$tanggal', total_harga='$harga', id_pegawai='$idPegawai' WHERE id_pengeluaran = '$idPengeluaran'";
+                        $sql = "UPDATE pengeluaran SET id_pengeluaran = '$idPengeluaran', tanggal = '$tanggal', id_pegawai='$idPegawai' WHERE id_pengeluaran = '$idPengeluaran'";
                         $res = $mysqli->query($sql);
 
                         if ($res) {

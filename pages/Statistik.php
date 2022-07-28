@@ -37,6 +37,9 @@ foreach ($dataPenjualan as $row) {
 <html lang="en">
 
 <?php include_once("../head.php"); ?>
+<style>
+    th { white-space: nowrap; }
+</style>
 
 <body>
     <?php headers(); ?>
@@ -153,14 +156,13 @@ foreach ($dataPenjualan as $row) {
                             <table id="example" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
                                 <thead class="align-middle">
                                     <tr class="text-center">
-                                        <th scope="col"  class="dt-center">No</th>
-                                        <!-- <th scope="col"  class="dt-center">Id Pengeluaran</th> -->
-                                        <th scope="col"  class="dt-center">Tanggal Pengeluaran</th>
-                                        <th scope="col"  class="dt-center">Stok Bahan</th>
-                                        <th scope="col"  class="dt-center">Jumlah</th>
-                                        <th scope="col"  class="dt-center">Harga Bahan</th>
-                                        <th scope="col"  class="dt-center">Total Bayar</th>
-                                        <th scope="col"  class="dt-center">By Pegawai</th>
+                                        <th scope="col" class="dt-center">No</th>
+                                        <th scope="col" class="dt-center">Id Pengeluaran</th>
+                                        <th scope="col" class="dt-center">Tanggal Pengeluaran</th>
+                                        <th scope="col" class="dt-center">Stok Bahan</th>
+                                        <th scope="col" class="dt-center">Jumlah</th>
+                                        <th scope="col" class="dt-center">Biaya Bahan</th>
+                                        <th scope="col" class="dt-center">By Pegawai</th>
                                     </tr>
                                 </thead>
                                 <tbody class="align-middle">
@@ -171,12 +173,11 @@ foreach ($dataPenjualan as $row) {
                                     ?>
                                         <tr class=" text-center">
                                             <td><?= $no++; ?>.</td>
-                                            <!-- <td><?php //$row["id_pengeluaran"]; ?></td> -->
+                                            <td><?php echo $row["id_pengeluaran"]; ?></td>
                                             <td><?php echo formatTgl($row["tanggal"]); ?></td>
                                             <td><?php echo $row["nama_bahan"]; ?></td>
                                             <td><?php echo $row["jumlah_stok"]; ?></td>
                                             <td>Rp <?php echo number_format($row["harga_satuan"], 0, ",", "."); ?></td>
-                                            <td>Rp <?php echo number_format($row["total_harga"], 0, ",", "."); ?></td>
                                             <td><?php echo $row["nama_pegawai"]; ?></td>
                                         </tr>
                                     <?php
@@ -191,14 +192,13 @@ foreach ($dataPenjualan as $row) {
                             <table id="example2" class="uk-table uk-table-hover uk-table-striped" style="width:100%">
                                 <thead class="align-middle">
                                     <tr class="text-center">
-                                        <th scope="col"  class="dt-center">No</th>
-                                        <!-- <th scope="col"  class="dt-center">Id Penjualan</th> -->
-                                        <th scope="col"  class="dt-center">Tanggal Penjualan</th>
-                                        <th scope="col"  class="dt-center">Nama Menu</th>
-                                        <th scope="col"  class="dt-center">Jenis Menu</th>
-                                        <th scope="col"  class="dt-center">Harga Satuan</th>
-                                        <th scope="col"  class="dt-center">Total Harga</th>
-                                        <th scope="col"  class="dt-center">By Pegawai</th>
+                                        <th scope="col" class="dt-center">No</th>
+                                        <th scope="col" class="dt-center">Id Penjualan</th>
+                                        <th scope="col" class="dt-center">Tanggal Penjualan</th>
+                                        <th scope="col" class="dt-center">Nama Menu</th>
+                                        <th scope="col" class="dt-center">Jenis Menu</th>
+                                        <th scope="col" class="dt-center">Harga Menu</th>
+                                        <th scope="col" class="dt-center">By Pegawai</th>
                                     </tr>
                                 </thead>
                                 <tbody class="align-middle">
@@ -209,18 +209,23 @@ foreach ($dataPenjualan as $row) {
                                     ?>
                                         <tr class=" text-center">
                                             <td><?= $no++; ?>.</td>
-                                            <!-- <td><?php //$row["id_penjualan"]; ?></td> -->
+                                            <td><?php echo $row["id_penjualan"]; ?></td>
                                             <td><?php echo formatTgl($row["tanggal"]); ?></td>
                                             <td><?php echo $row["nama_menu"]; ?></td>
                                             <td><?php echo $row["jenis_menu"]; ?></td>
                                             <td>Rp <?php echo number_format($row["harga_satuan"], 0, ",", "."); ?></td>
-                                            <td>Rp <?php echo number_format($row["total_harga"], 0, ",", "."); ?></td>
                                             <td><?php echo $row["nama_pegawai"]; ?></td>
                                         </tr>
                                     <?php
                                     }
                                     ?>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="5" style="text-align:right">Total:</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     <!-- </div> -->
@@ -334,9 +339,42 @@ foreach ($dataPenjualan as $row) {
                 });
             }, 1000);
             $('#example').DataTable({
+                language : {
+                    url : 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/id.json'
+                },
                 scrollX: true,
             });
             $('#example2').DataTable({
+                language : {
+                    url : 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/id.json'
+                },
+                // footerCallback: function (row, data, start, end, display) {
+                //     var api = this.api();
+        
+                //     // Remove the formatting to get integer data for summation
+                //     var intVal = function (i) {
+                //         return typeof i === 'string' ? i.replace(/[\$,]/g, '') * 1 : typeof i === 'number' ? i : 0;
+                //     };
+        
+                //     // Total over all pages
+                //     total = api
+                //         .column(4)
+                //         .data()
+                //         .reduce(function (a, b) {
+                //             return intVal(a) + intVal(b);
+                //         }, 0);
+        
+                //     // Total over this page
+                //     pageTotal = api
+                //         .column(4, { page: 'current' })
+                //         .data()
+                //         .reduce(function (a, b) {
+                //             return intVal(a) + intVal(b);
+                //         }, 0);
+        
+                //     // Update footer
+                //     $(api.column(4).footer()).html('$' + pageTotal + ' ( $' + total + ' total)');
+                // },
                 scrollX: true,
             });
 

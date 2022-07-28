@@ -39,12 +39,6 @@ if (!isset($_SESSION["id_pegawai"])) {
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputTotalHarga" class="col-sm-2 col-form-label">Total Harga</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputTotalHarga" name="inputTotalHarga" required>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
                         <label for="inputIdPegawai" class="col-sm-2 col-form-label">ID Pegawai</label>
                         <!-- <div class="col-sm-10">
                             <input type="text" class="form-control" id="inputIdPegawai" name="inputIdPegawai" required>

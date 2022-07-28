@@ -42,7 +42,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                                 <th scope="col" class="dt-center">No</th>
                                 <th scope="col" class="dt-center">ID Pengeluaran</th>
                                 <th scope="col" class="dt-center">Stok Bahan</th>
-                                <th scope="col" class="dt-center">Harga Satuan</th>
+                                <th scope="col" class="dt-center">Biaya Bahan</th>
                                 <th scope="col" class="dt-center">Aksi</th>
                             </tr>
                         </thead>
@@ -56,7 +56,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                                     <td><?= $no++; ?>.</td>
                                     <td><?php echo $dpengeluaran["id_pengeluaran"];
                                         ?></td>
-                                    <td class="text-start"><?php echo $dpengeluaran["nama_bahan"];
+                                    <td class="text-start"><?php echo $dpengeluaran["nama_bahan"] . " (" . $dpengeluaran["satuan"] . ")";
                                                             ?></td>
                                     <td>Rp <?php echo number_format($dpengeluaran["harga_satuan"], 0, ",", ".");
                                             ?></td>
@@ -82,7 +82,11 @@ if (!isset($_SESSION["id_pegawai"])) {
                     $(this).remove();
                 });
             }, 1000);
-            $('#example').DataTable();
+            $('#example').DataTable({
+                language : {
+                    url : 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/id.json'
+                }
+            });
         });
     </script>
 </body>

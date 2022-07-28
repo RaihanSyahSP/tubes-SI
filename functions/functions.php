@@ -252,7 +252,7 @@ function getListStok()
 {
     global $mysqli;
     if ($mysqli->connect_errno == 0) {
-        $res = $mysqli->query("SELECT * FROM stok_bahan ORDER BY id_stok");
+        $res = $mysqli->query("SELECT * FROM stok_bahan ORDER BY nama_bahan");
         if ($res) {
             $data = $res->fetch_all(MYSQLI_ASSOC);
             $res->free();
@@ -270,10 +270,10 @@ function getListPenjualan()
     global $mysqli;
     if ($mysqli->connect_errno == 0) {
         $res = $mysqli->query(
-            "SELECT penjualan.id_penjualan, penjualan.tanggal, penjualan.total_harga, pegawai.nama_pegawai 
-             FROM penjualan
-             JOIN pegawai ON penjualan.id_pegawai = pegawai.id_pegawai
-             ORDER BY id_penjualan"
+            "SELECT penjualan.id_penjualan, penjualan.tanggal, SUM(harga_satuan) total_harga, pegawai.nama_pegawai FROM detail_penjualan 
+            RIGHT JOIN penjualan ON penjualan.id_penjualan = detail_penjualan.id_penjualan
+            JOIN pegawai ON penjualan.id_pegawai = pegawai.id_pegawai
+            GROUP BY id_penjualan"
         );
         if ($res) {
             $data = $res->fetch_all(MYSQLI_ASSOC);
@@ -288,11 +288,14 @@ function getListPenjualan()
 }
 
 function getListPengeluaran()
-{
+{ 
     global $mysqli;
     if ($mysqli->connect_errno == 0) {
-        $res = $mysqli->query("SELECT p.id_pengeluaran,p.tanggal,p.total_harga,g.nama_pegawai 
-        FROM pengeluaran p JOIN pegawai g ON p.id_pegawai=g.id_pegawai ORDER BY p.id_pengeluaran");
+        //SELECT p.id_pengeluaran,p.tanggal,p.total_harga,g.nama_pegawai FROM pengeluaran p JOIN pegawai g ON p.id_pegawai=g.id_pegawai ORDER BY p.id_pengeluaran
+        $res = $mysqli->query("SELECT pengeluaran.id_pengeluaran, pengeluaran.tanggal, pengeluaran.total_harga, pegawai.nama_pegawai FROM detail_pengeluaran 
+        RIGHT JOIN pengeluaran ON pengeluaran.id_pengeluaran = detail_pengeluaran.id_pengeluaran
+        JOIN pegawai ON pengeluaran.id_pegawai = pegawai.id_pegawai
+        GROUP BY id_pengeluaran");
         if ($res) {
             $data = $res->fetch_all(MYSQLI_ASSOC);
             $res->free();
@@ -331,7 +334,7 @@ function getListDetailPengeluaran()
 {
     global $mysqli;
     if ($mysqli->connect_errno == 0) {
-        $res = $mysqli->query("SELECT d.id, p.id_pengeluaran, s.nama_bahan, d.harga_satuan 
+        $res = $mysqli->query("SELECT d.id, p.id_pengeluaran, s.nama_bahan, s.qty, s.satuan, d.harga_satuan 
         FROM detail_pengeluaran d 
         JOIN pengeluaran p ON p.id_pengeluaran = d.id_pengeluaran
         JOIN stok_bahan s ON s.id_stok = d.id_stok
@@ -392,8 +395,6 @@ function getStatistikPenjualan()
         return false;
     }
 }
-
-
 
 function navbar()
 {

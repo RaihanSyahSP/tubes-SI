@@ -43,7 +43,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                                 <th scope="col" class="dt-center">No</th>
                                 <th scope="col" class="dt-center">ID Penjualan</th>
                                 <th scope="col" class="dt-center">Nama Menu</th>
-                                <th scope="col" class="dt-center">Harga Satuan</th>
+                                <th scope="col" class="dt-center">Harga Menu</th>
                                 <th scope="col" class="dt-center">Aksi</th>
                             </tr>
                         </thead>
@@ -82,7 +82,11 @@ if (!isset($_SESSION["id_pegawai"])) {
                     $(this).remove();
                 });
             }, 1000);
-            $('#example').DataTable();
+            $('#example').DataTable({
+                language : {
+                    url : 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/id.json'
+                }
+            });
         });
     </script>
 </body>

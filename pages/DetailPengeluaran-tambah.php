@@ -49,14 +49,20 @@ if (!isset($_SESSION["id_pegawai"])) {
                                 <?php
                                     $data = getListStok();
                                     foreach ($data as $row) {
-                                        echo "<option value=\"" . $row["id_stok"] . "\">" . $row["nama_bahan"] . "</option>";
+                                        echo "<option value=\"" . $row["id_stok"] . "\">" . $row["nama_bahan"] . " (". $row["satuan"] . ")</option>";
                                     }
                                 ?>
                             </select>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputHargaSatuan" class="col-sm-2 col-form-label">Harga Satuan</label>
+                        <label for="inputQty" class="col-sm-2 col-form-label">Qty</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputQty" name="inputQty" required>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputHargaSatuan" class="col-sm-2 col-form-label">Biaya Bahan</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="inputHargaSatuan" name="inputHargaSatuan" required>
                         </div>

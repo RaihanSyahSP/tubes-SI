@@ -52,7 +52,7 @@ if (!isset($_SESSION["id_pegawai"])) {
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="harga" class="col-sm-2 col-form-label">Harga Satuan</label>
+                                <label for="harga" class="col-sm-2 col-form-label">Biaya Bahan</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="harga" readonly name="harga" value="<?php echo $row["harga_satuan"]; ?>">
                                 </div>

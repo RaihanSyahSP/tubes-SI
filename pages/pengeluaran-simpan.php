@@ -29,7 +29,6 @@ if (!isset($_POST["tblSimpan"])) {
                     if ($mysqli->connect_errno == 0) {
                         $id_pengeluaran = $mysqli->escape_string($_POST["inputIdPengeluaran"]);
                         $tanggal = $mysqli->escape_string($_POST["inputTanggal"]);
-                        $total_harga = $mysqli->escape_string($_POST["inputTotalHarga"]);
                         $id_pegawai = $mysqli->escape_string($_POST["inputIdPegawai"]);
                         $adaError = false;
 
@@ -46,83 +45,16 @@ if (!isset($_POST["tblSimpan"])) {
                         //validasi tanggal lahir
                         if ($tanggal > date('Y-m-d')) {
                             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan tanggal lahir melebihi tanggal hari ini.                 
+                                    <strong>Gagal!</strong> Data gagal disimpan! Tanggal pengeluaran melebihi tanggal hari ini.                 
                                 </div>'";
                             $adaError = true;
                         }
 
-                        $regexTotalHarga = "/^[0-9]*$/";
-                        if (!preg_match($regexTotalHarga, $total_harga)) {
-                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan! Format total harga harus berupa angka.                 
-                                </div>";
-                            $adaError = true;
-                        }
-
-                        // if ($namaPegawai == 'Pilih Nama Pegawai') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan! Pilih Nama Pegawai terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-
-
-                        // //validasi nilai
-                        // if (strlen($kd_nilai) > 4 || strlen($kd_nilai) < 4) {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan kode nilai harus terdiri dari 4 karakter.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // $formaKdNilai = substr($kd_nilai, 0, 1);
-                        // if ($formaKdNilai != 'N') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan kode nilai harus diawali oleh huruf N.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-
-                        // if (!preg_match("/^[0-9]*$/", $nilai)) {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan nilai tidak boleh mengandung huruf.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($nim == 'Pilih NIM') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih NIM terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($kd_matkul == 'Pilih Kode Mata Kuliah') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih kode mata kuliah terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($index == 'Pilih Index Nilai') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih index terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
-
-                        // if ($keterangan == 'Pilih Keterangan') {
-                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                        //             <strong>Gagal!</strong> Data gagal disimpan pilih keterangan terlebih dahulu.                 
-                        //         </div>";
-                        //     $adaError = true;
-                        // }
+                        
 
 
                         if ($adaError == false) {
-                            $sql = "INSERT INTO pengeluaran VALUES ('$id_pengeluaran', '$tanggal', '$total_harga', '$id_pegawai')";
+                            $sql = "INSERT INTO pengeluaran(id_pengeluaran, tanggal, id_pegawai) VALUES ('$id_pengeluaran', '$tanggal', '$id_pegawai')";
                             $res = $mysqli->query($sql);
 
                             if ($res) {

@@ -29,7 +29,6 @@ if (!isset($_POST["tblSimpan"])) {
                     if ($mysqli->connect_errno == 0) {
                         $id_penjualan = $mysqli->escape_string($_POST["inputIdPenjualan"]);
                         $tanggal = $mysqli->escape_string($_POST["inputTanggal"]);
-                        $total_harga = $mysqli->escape_string($_POST["inputTotalHarga"]);
                         $id_pegawai = $mysqli->escape_string($_POST["inputIdPegawai"]);
                         $adaError = false;
 
@@ -44,12 +43,12 @@ if (!isset($_POST["tblSimpan"])) {
                             $adaError = true;
                         }
 
-                        if (!preg_match("/^[0-9]*$/", $total_harga)) {
-                            $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan! format total harga tidak boleh mengandung huruf.                 
-                                </div>";
-                            $adaError = true;
-                        }
+                        // if (!preg_match("/^[0-9]*$/", $total_harga)) {
+                        //     $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+                        //             <strong>Gagal!</strong> Data gagal disimpan! format total harga tidak boleh mengandung huruf.                 
+                        //         </div>";
+                        //     $adaError = true;
+                        // }
 
                         if ($tanggal > date('Y-m-d')) {
                             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
@@ -66,7 +65,7 @@ if (!isset($_POST["tblSimpan"])) {
                         } 
 
                         if ($adaError == false) {
-                        $sql = "INSERT INTO penjualan VALUES ('$id_penjualan', '$tanggal', '$total_harga', '$id_pegawai')";
+                        $sql = "INSERT INTO penjualan(id_penjualan, tanggal, id_pegawai) VALUES ('$id_penjualan', '$tanggal', '$id_pegawai')";
                         $res = $mysqli->query($sql);
 
                         if ($res) {

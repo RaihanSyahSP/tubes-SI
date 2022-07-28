@@ -35,7 +35,7 @@ if (!isset($_POST["tblEdit"])) {
                         // validasi
                         if (!preg_match("/^[0-9]*$/", $harga)) {
                             $pesanSalah .= "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-                                    <strong>Gagal!</strong> Data gagal disimpan! format harga tidak boleh mengandung huruf.                 
+                                    <strong>Gagal!</strong> Data gagal disimpan! format biaya bahan tidak boleh mengandung huruf.                 
                                 </div>";
                             $adaError = true;
                         }

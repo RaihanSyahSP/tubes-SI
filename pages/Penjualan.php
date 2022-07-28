@@ -41,9 +41,9 @@ if (!isset($_SESSION["id_pegawai"])) {
                     <thead class="text-center">
                         <tr>
                             <th scope="col" class="dt-center">No</th>
-                            <th scope="col" class="dt-center" placeholder="Contoh: P1234">ID Penjualan</th>
+                            <th scope="col" class="dt-center">ID Penjualan</th>
                             <th scope="col" class="dt-center">Tanggal</th>
-                            <th scope="col" class="dt-center">Total Harga</th>
+                            <th scope="col" class="dt-center">Total Pendapatan</th>
                             <th scope="col" class="dt-center">Nama Pegawai</th>
                             <th scope="col" class="dt-center">Aksi</th>
                         </tr>
@@ -82,7 +82,11 @@ $(document).ready(function() {
                     $(this).remove();
                 });
             }, 1000);
-            $('#example').DataTable();
+            $('#example').DataTable({
+                language : {
+                    url : 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/id.json'
+                }
+            });
         });
 </script>
 

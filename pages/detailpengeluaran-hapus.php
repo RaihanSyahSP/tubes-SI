@@ -40,7 +40,7 @@ if (!isset($_POST["tblHapus"])) {
                                         Data berhasil dihapus
                                     </div>
                                     <a href='DetailPengeluaran.php'>
-                                        <button type='button' class='btn btn-success'>View Pegawai</button>
+                                        <button type='button' class='btn btn-success'>View Detail Pengeluaran</button>
                                     </a>
                                 ";
                             }

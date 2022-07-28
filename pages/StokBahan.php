@@ -81,7 +81,11 @@ if (!isset($_SESSION["id_pegawai"])) {
                     $(this).remove();
                 });
             }, 1000);
-            $('#example').DataTable();
+            $('#example').DataTable({
+                language : {
+                    url : 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/id.json'
+                }
+            });
         });
     </script>
 </body>
